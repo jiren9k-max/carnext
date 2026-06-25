@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { Container } from "./container"
@@ -37,20 +38,29 @@ export function Header() {
       >
         <Container>
           <div className="flex h-16 md:h-20 items-center justify-between">
-            <Link
-              href="/"
-              className="text-h4 font-bold tracking-tight text-foreground"
-            >
-              Car<span className="text-primary">Next</span>
+            <Link href="/" className="group flex items-center gap-2">
+              <div className="relative transition-all duration-500 group-hover:scale-110">
+                <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0 opacity-0 blur-xl transition-all duration-500 group-hover:from-orange-500/40 group-hover:via-amber-500/30 group-hover:to-yellow-500/20 group-hover:opacity-100" />
+                <Image
+                  src="/logo.png"
+                  alt="CarNext"
+                  width={48}
+                  height={48}
+                  className="relative size-12"
+                />
+              </div>
+              <span className="text-h2 font-bold tracking-tight text-foreground">
+                Car<span className="text-primary">Next</span>
+              </span>
             </Link>
 
             <Navigation />
 
             <div className="flex items-center gap-4">
-              <Button variant="glass" size="sm" className="hidden md:inline-flex">
+              <Button variant="glass" size="sm" className="hidden md:inline-flex transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20">
                 Prijava
               </Button>
-              <Button size="sm" className="hidden md:inline-flex">
+              <Button size="sm" className="hidden md:inline-flex transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20">
                 Registracija
               </Button>
               <MobileNav />

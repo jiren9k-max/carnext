@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react"
 import { motion, useInView } from "framer-motion"
+import Image from "next/image"
 import {
   ShieldCheck,
   FileSearch,
@@ -164,6 +165,17 @@ function StepCard({
 export function WhyCarNext() {
   return (
     <section className="relative overflow-hidden pb-24 pt-16 md:pb-32 md:pt-24">
+      <div className="absolute inset-0">
+        <Image
+          src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1920&q=80"
+          alt="Road"
+          fill
+          className="object-cover"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0B0B] via-[#0B0B0B]/70 to-[#0B0B0B]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B0B0B]/50 via-transparent to-[#0B0B0B]/50" />
+      </div>
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-1/2 top-0 size-[600px] -translate-x-1/2 rounded-full bg-primary/5 blur-[150px]" />
       </div>
@@ -176,11 +188,11 @@ export function WhyCarNext() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="mb-14 text-center"
         >
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
-            <span className="text-caption text-primary">Zašto CarNext</span>
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/20 px-4 py-1.5 backdrop-blur-sm">
+            <span className="text-caption font-semibold text-primary">Zašto CarNext</span>
           </div>
-          <h2 className="text-h1 text-foreground">Zašto odabrati CarNext?</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-lead text-muted-foreground">
+          <h2 className="text-h1 text-white">Zašto odabrati CarNext?</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-lead text-white/80">
             Ne prodajemo samo automobile — nudimo kompletan premium doživljaj
             kupovine, uz punu podršku i transparentnost.
           </p>

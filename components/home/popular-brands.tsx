@@ -6,37 +6,56 @@ import { motion, useMotionValue } from "framer-motion"
 import { Container } from "@/components/layout/container"
 import { brands } from "@/data/brands"
 
-const brandBorderColors = [
-  "hover:border-emerald-500/30",
-  "hover:border-blue-500/30",
-  "hover:border-purple-500/30",
-  "hover:border-amber-500/30",
-  "hover:border-rose-500/30",
-  "hover:border-teal-500/30",
-  "hover:border-primary/30",
-  "hover:border-cyan-500/30",
-  "hover:border-pink-500/30",
-  "hover:border-lime-500/30",
+const brandColors = [
+  "from-emerald-500/20 to-emerald-500/5",
+  "from-blue-500/20 to-blue-500/5",
+  "from-purple-500/20 to-purple-500/5",
+  "from-amber-500/20 to-amber-500/5",
+  "from-rose-500/20 to-rose-500/5",
+  "from-teal-500/20 to-teal-500/5",
+  "from-primary/20 to-primary/5",
+  "from-cyan-500/20 to-cyan-500/5",
+  "from-pink-500/20 to-pink-500/5",
+  "from-lime-500/20 to-lime-500/5",
+]
+
+const brandLogos = [
+  "hover:text-emerald-400",
+  "hover:text-blue-400",
+  "hover:text-purple-400",
+  "hover:text-amber-400",
+  "hover:text-rose-400",
+  "hover:text-teal-400",
+  "hover:text-primary",
+  "hover:text-cyan-400",
+  "hover:text-pink-400",
+  "hover:text-lime-400",
 ]
 
 function BrandCard({ brand, index }: { brand: (typeof brands)[number]; index: number }) {
-  const borderColor = brandBorderColors[index % brandBorderColors.length]
+  const gradient = brandColors[index % brandColors.length]
+  const logoColor = brandLogos[index % brandLogos.length]
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-20px" }}
-      transition={{ duration: 0.5, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.4, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
     >
       <Link
         href={`/inventory?make=${brand.slug}`}
-        className={`group flex flex-col items-center justify-center gap-4 rounded-[var(--radius)] border border-border bg-card p-6 transition-all duration-500 hover:shadow-hover sm:p-8 ${borderColor}`}
+        className="group relative flex flex-col items-center justify-center gap-4 overflow-hidden rounded-[var(--radius)] border border-white/20 bg-gradient-to-br from-white/[0.08] to-white/[0.02] p-6 shadow-glass backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:border-white/40 hover:shadow-lg sm:p-8"
       >
-        <div className="flex items-center justify-center transition-all duration-500 grayscale group-hover:grayscale-0">
-          <brand.Logo className="h-14 w-14 text-muted-foreground transition-all duration-500 group-hover:scale-110 group-hover:text-foreground sm:h-16 sm:w-16" />
+        <div
+          className={`pointer-events-none absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${gradient}`}
+        />
+        <div className="relative flex items-center justify-center transition-all duration-500 grayscale group-hover:grayscale-0">
+          <brand.Logo
+            className={`h-14 w-14 text-white/40 transition-all duration-500 group-hover:scale-110 sm:h-16 sm:w-16 ${logoColor}`}
+          />
         </div>
-
-        <span className="text-body-sm font-medium text-muted-foreground transition-colors duration-500 group-hover:text-foreground">
+        <span className="relative text-body-sm font-medium text-white/60 transition-colors duration-500 group-hover:text-white">
           {brand.name}
         </span>
       </Link>
@@ -49,10 +68,18 @@ export function PopularBrands() {
   const dragX = useMotionValue(0)
 
   return (
-    <section className="relative overflow-hidden pb-24">
+    <section className="relative overflow-hidden pb-24 pt-8">
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0B0B0B] via-[#0B0B0B]/85 to-[#0B0B0B]" />
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-40 top-1/2 size-80 -translate-y-1/2 rounded-full bg-primary/5 blur-[120px]" />
-        <div className="absolute -right-40 top-1/2 size-80 -translate-y-1/2 rounded-full bg-primary/5 blur-[120px]" />
+        <div className="absolute -left-40 top-1/2 size-[500px] -translate-y-1/2 rounded-full bg-white/10 blur-[150px]" />
+        <div className="absolute -right-40 top-1/2 size-[500px] -translate-y-1/2 rounded-full bg-white/5 blur-[150px]" />
+        <div className="absolute left-1/2 top-0 size-[400px] -translate-x-1/2 rounded-full bg-white/5 blur-[120px]" />
+        <span className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 rotate-[-15deg] whitespace-nowrap text-[clamp(2rem,8vw,6rem)] font-bold tracking-wider text-white/5 select-none">
+          Popularne marke
+        </span>
+        <span className="absolute left-1/2 top-2/3 -translate-x-1/2 -translate-y-1/2 rotate-[-15deg] whitespace-nowrap text-[clamp(1rem,4vw,3rem)] font-medium tracking-wider text-white/[0.03] select-none">
+          Istražite vozila vodećih svjetskih proizvođača
+        </span>
       </div>
 
       <Container>
@@ -63,11 +90,11 @@ export function PopularBrands() {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="mb-10 text-center"
         >
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
-            <span className="text-caption text-primary">Pouzdane marke</span>
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/20 px-4 py-1.5 backdrop-blur-sm">
+            <span className="text-caption font-semibold text-white">Pouzdane marke</span>
           </div>
-          <h2 className="text-h2 text-foreground">Popularne marke</h2>
-          <p className="mx-auto mt-3 max-w-lg text-body text-muted-foreground">
+          <h2 className="text-h2 text-white">Popularne marke</h2>
+          <p className="mx-auto mt-3 max-w-lg text-body text-white/80">
             Istražite vozila vodećih svjetskih proizvođača.
           </p>
         </motion.div>
@@ -87,28 +114,37 @@ export function PopularBrands() {
             style={{ x: dragX }}
             className="flex cursor-grab gap-4 active:cursor-grabbing"
           >
-            {brands.map((brand, i) => (
-              <motion.div
-                key={brand.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
-                className="shrink-0"
-              >
-                <Link
-                  href={`/inventory?make=${brand.slug}`}
-                  className={`flex w-[140px] flex-col items-center gap-3 rounded-[var(--radius)] border border-border bg-card p-5 transition-all duration-500 hover:shadow-hover ${brandBorderColors[i % brandBorderColors.length]}`}
+            {brands.map((brand, i) => {
+              const gradient = brandColors[i % brandColors.length]
+              const logoColor = brandLogos[i % brandLogos.length]
+              return (
+                <motion.div
+                  key={brand.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
+                  className="shrink-0"
                 >
-                  <div className="flex items-center justify-center transition-all duration-500 grayscale hover:grayscale-0">
-                    <brand.Logo className="h-12 w-12 text-muted-foreground transition-all duration-500 hover:scale-110 hover:text-foreground" />
-                  </div>
-                  <span className="text-small font-medium text-muted-foreground transition-colors duration-500 hover:text-foreground">
-                    {brand.name}
-                  </span>
-                </Link>
-              </motion.div>
-            ))}
+                  <Link
+                    href={`/inventory?make=${brand.slug}`}
+                    className={`group relative flex w-[140px] flex-col items-center gap-3 overflow-hidden rounded-[var(--radius)] border border-white/20 bg-gradient-to-br from-white/[0.08] to-white/[0.02] p-5 backdrop-blur-sm transition-all duration-500 hover:-translate-y-0.5 hover:border-white/40 hover:shadow-lg`}
+                  >
+                    <div
+                      className={`pointer-events-none absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${gradient}`}
+                    />
+                    <div className="relative flex items-center justify-center transition-all duration-500 grayscale hover:grayscale-0">
+                      <brand.Logo
+                        className={`h-12 w-12 text-white/40 transition-all duration-500 hover:scale-110 ${logoColor}`}
+                      />
+                    </div>
+                    <span className="relative text-small font-medium text-white/60 transition-colors duration-500 hover:text-white">
+                      {brand.name}
+                    </span>
+                  </Link>
+                </motion.div>
+              )
+            })}
           </motion.div>
 
           <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-[#0B0B0B] to-transparent" />

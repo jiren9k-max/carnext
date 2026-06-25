@@ -2,8 +2,9 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { motion } from "framer-motion"
-import { Mail, Phone, ArrowRight, Send } from "lucide-react"
+import { Mail, Phone, ArrowRight, Send, MapPin, Clock } from "lucide-react"
 import { Container } from "./container"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -16,8 +17,8 @@ const quickLinks = [
 ]
 
 const socialLinks = [
-  { label: "Facebook", href: "#" },
-  { label: "Instagram", href: "#" },
+  { label: "Facebook", href: "https://www.facebook.com/carnextsarajevo" },
+  { label: "Instagram", href: "https://www.instagram.com/carnextsarajevo/" },
   { label: "TikTok", href: "#" },
 ]
 
@@ -36,35 +37,45 @@ export function Footer() {
   }
 
   return (
-    <footer className="relative overflow-hidden border-t border-border bg-background">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-40 -top-40 size-[400px] rounded-full bg-primary/5 blur-[120px]" />
+    <footer className="relative overflow-hidden border-t border-white/10 bg-[#0B0B0B]">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-1/2 top-1/2 size-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/15 blur-[200px]" />
+        <div className="absolute left-1/2 top-1/2 size-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[150px]" />
       </div>
 
       <Container className="relative">
-        <div className="grid gap-10 py-16 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+        <div className="grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-4">
-            <Link
-              href="/"
-              className="inline-block text-h4 font-bold tracking-tight text-foreground"
-            >
-              Car<span className="text-primary">Next</span>
+            <Link href="/" className="group inline-flex items-center gap-2">
+              <div className="relative transition-all duration-500 group-hover:scale-110">
+                <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0 opacity-0 blur-xl transition-all duration-500 group-hover:from-orange-500/40 group-hover:via-amber-500/30 group-hover:to-yellow-500/20 group-hover:opacity-100" />
+                <Image
+                  src="/logo.png"
+                  alt="CarNext"
+                  width={48}
+                  height={48}
+                  className="relative size-12"
+                />
+              </div>
+              <span className="text-h2 font-bold tracking-tight text-white">
+                Car<span className="text-primary">Next</span>
+              </span>
             </Link>
-            <p className="mt-4 max-w-sm text-body-sm leading-relaxed text-muted-foreground">
+            <p className="mt-4 max-w-sm text-body-sm leading-relaxed text-white/50">
               Premium auto marketplace. Nudimo provjerena vozila, profesionalnu uslugu
               i potpuno transparentan proces kupovine. Vaše povjerenje nam je najvažnije.
             </p>
 
             <div className="mt-6 space-y-3">
-              <div className="flex items-center gap-3 text-body-sm text-muted-foreground">
-                <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10">
-                  <Mail className="size-4 text-primary" />
+              <div className="flex items-center gap-3 text-body-sm text-white/60">
+                <div className="flex size-8 items-center justify-center rounded-lg bg-white/10">
+                  <Mail className="size-4 text-white/80" />
                 </div>
                 <span>Husein Holjan</span>
               </div>
-              <div className="flex items-center gap-3 text-body-sm text-muted-foreground">
-                <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10">
-                  <Phone className="size-4 text-primary" />
+              <div className="flex items-center gap-3 text-body-sm text-white/60">
+                <div className="flex size-8 items-center justify-center rounded-lg bg-white/10">
+                  <Phone className="size-4 text-white/80" />
                 </div>
                 <a
                   href="tel:+38761911654"
@@ -77,7 +88,7 @@ export function Footer() {
           </div>
 
           <div className="lg:col-span-2">
-            <h4 className="text-small font-semibold uppercase tracking-wider text-foreground">
+            <h4 className="text-small font-semibold uppercase tracking-wider text-white/70">
               Brzi linkovi
             </h4>
             <ul className="mt-5 space-y-3">
@@ -85,7 +96,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="group inline-flex items-center gap-2 text-body-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="group inline-flex items-center gap-2 text-body-sm text-white/50 transition-colors hover:text-white"
                   >
                     <span className="h-px w-0 bg-primary transition-all duration-300 group-hover:w-3" />
                     {link.label}
@@ -96,62 +107,62 @@ export function Footer() {
           </div>
 
           <div className="lg:col-span-3">
-            <h4 className="text-small font-semibold uppercase tracking-wider text-foreground">
-              Društvene mreže
+            <h4 className="text-small font-semibold uppercase tracking-wider text-white/70">
+              Kontakt
             </h4>
-            <ul className="mt-5 space-y-3">
-              {socialLinks.map((social) => (
-                <li key={social.label}>
-                  <Link
-                    href={social.href}
-                    className="group inline-flex items-center gap-3 text-body-sm text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    <span className="flex size-8 items-center justify-center rounded-lg border border-border transition-colors group-hover:border-primary/30 group-hover:bg-primary/10">
-                      <span className="text-small font-medium text-muted-foreground transition-colors group-hover:text-primary">
-                        {social.label[0]}
-                      </span>
-                    </span>
-                    {social.label}
-                  </Link>
-                </li>
-              ))}
+            <ul className="mt-5 space-y-4">
+              <li className="flex items-start gap-3 text-body-sm text-white/50">
+                <MapPin className="mt-0.5 size-4 shrink-0 text-white/40" />
+                <span>Kasindolska 58, Ilidža, 71000 Sarajevo</span>
+              </li>
+              <li className="flex items-start gap-3 text-body-sm text-white/50">
+                <Clock className="mt-0.5 size-4 shrink-0 text-white/40" />
+                <span>Pon-Pet: 09:00 - 17:00<br />Sub: 09:00 - 14:00</span>
+              </li>
+              <li className="flex items-center gap-3 text-body-sm text-white/50">
+                <Mail className="size-4 shrink-0 text-white/40" />
+                <a href="mailto:info@carnextsarajevo.com" className="hover:text-primary transition-colors">
+                  info@carnextsarajevo.com
+                </a>
+              </li>
             </ul>
 
-            <h4 className="mt-8 text-small font-semibold uppercase tracking-wider text-foreground">
-              Pravni linkovi
-            </h4>
-            <ul className="mt-5 space-y-3">
-              {legalLinks.map((link) => (
-                <li key={link.label}>
+            <div className="mt-8">
+              <h4 className="text-small font-semibold uppercase tracking-wider text-white/70">
+                Društvene mreže
+              </h4>
+              <div className="mt-4 flex gap-3">
+                {socialLinks.map((social) => (
                   <Link
-                    href={link.href}
-                    className="text-body-sm text-muted-foreground transition-colors hover:text-foreground"
+                    key={social.label}
+                    href={social.href}
+                    className="flex size-10 items-center justify-center rounded-full border border-white/20 bg-white/5 text-xs font-medium text-white/60 transition-all duration-300 hover:border-white/40 hover:bg-white/10 hover:text-white hover:-translate-y-0.5"
                   >
-                    {link.label}
+                    {social.label[0]}
                   </Link>
-                </li>
-              ))}
-            </ul>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className="lg:col-span-3">
-            <h4 className="text-small font-semibold uppercase tracking-wider text-foreground">
+            <h4 className="text-small font-semibold uppercase tracking-wider text-white/70">
               Novosti
             </h4>
-            <p className="mt-3 text-body-sm text-muted-foreground">
+            <p className="mt-3 text-body-sm text-white/50">
               Prijavite se za najnovije ponude i ekskluzivne informacije.
             </p>
             <form onSubmit={handleSubmit} className="mt-5">
               <div className="flex gap-2">
                 <div className="relative flex-1">
-                  <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                  <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-white/40" />
                   <Input
                     type="email"
                     placeholder="vaš@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="pl-9"
+                    className="border-white/20 bg-white/5 pl-9 text-white placeholder:text-white/30"
                   />
                 </div>
                 <Button type="submit" size="icon" className="shrink-0">
@@ -160,18 +171,32 @@ export function Footer() {
               </div>
             </form>
 
-            <div className="mt-8 rounded-lg border border-border/50 bg-card p-4">
-              <p className="text-small text-muted-foreground">
+            <div className="mt-8 overflow-hidden rounded-[var(--radius)] border border-white/20 bg-gradient-to-br from-white/[0.08] to-white/[0.02] p-5 backdrop-blur-sm">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-primary/5 pointer-events-none" />
+              <p className="relative text-small text-white/60">
                 Pozovite nas i dogovorite testnu vožnju već danas.
               </p>
               <a
                 href="tel:+38761911654"
-                className="mt-1 inline-flex items-center gap-1 text-h6 font-bold text-primary transition-colors hover:text-accent"
+                className="relative mt-2 inline-flex items-center gap-1 text-h6 font-bold text-primary transition-colors hover:text-accent"
               >
                 061 911 654
                 <ArrowRight className="size-4" />
               </a>
             </div>
+
+            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+              {legalLinks.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-small text-white/40 transition-colors hover:text-white/60"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
@@ -179,9 +204,9 @@ export function Footer() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="flex flex-col items-center justify-between gap-4 border-t border-border py-8 md:flex-row"
+          className="flex flex-col items-center justify-between gap-4 border-t border-white/10 py-8 md:flex-row"
         >
-          <p className="text-small text-muted-foreground">
+          <p className="text-small text-white/40">
             &copy; {new Date().getFullYear()} CarNext. Sva prava zadržana.
           </p>
           <div className="flex gap-6">
@@ -189,7 +214,7 @@ export function Footer() {
               <Link
                 key={social.label}
                 href={social.href}
-                className="text-small text-muted-foreground transition-colors hover:text-primary"
+                className="text-small text-white/40 transition-colors hover:text-primary"
               >
                 {social.label}
               </Link>

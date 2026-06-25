@@ -19,7 +19,7 @@ export function Navigation() {
         <Link
           key={link.href}
           href={link.href}
-          className="relative text-body-sm text-muted-foreground transition-colors hover:text-foreground"
+          className="relative text-body-sm text-muted-foreground transition-colors hover:text-foreground after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
         >
           {link.label}
         </Link>
