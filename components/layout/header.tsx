@@ -1,0 +1,63 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import { motion } from "framer-motion"
+import { cn } from "@/lib/utils"
+import { Container } from "./container"
+import { Navigation, MobileNav } from "./navigation"
+import { Button } from "../ui/button"
+
+export function Header() {
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  return (
+    <header className="fixed inset-x-0 top-0 z-50">
+      <motion.div
+        initial={false}
+        animate={{
+          backgroundColor: scrolled
+            ? "rgba(11, 11, 11, 0.85)"
+            : "rgba(11, 11, 11, 0)",
+        }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className={cn(
+          "border-b transition-all duration-500",
+          scrolled
+            ? "backdrop-blur-2xl border-border/50"
+            : "backdrop-blur-none border-transparent"
+        )}
+      >
+        <Container>
+          <div className="flex h-16 md:h-20 items-center justify-between">
+            <Link
+              href="/"
+              className="text-h4 font-bold tracking-tight text-foreground"
+            >
+              Car<span className="text-primary">Next</span>
+            </Link>
+
+            <Navigation />
+
+            <div className="flex items-center gap-4">
+              <Button variant="glass" size="sm" className="hidden md:inline-flex">
+                Prijava
+              </Button>
+              <Button size="sm" className="hidden md:inline-flex">
+                Registracija
+              </Button>
+              <MobileNav />
+            </div>
+          </div>
+        </Container>
+      </motion.div>
+    </header>
+  )
+}
