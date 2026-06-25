@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { motion } from "framer-motion"
 import { Fuel, Gauge, Calendar, Cog, Eye } from "lucide-react"
 import { Card } from "@/components/ui/card"
@@ -65,6 +66,14 @@ export function CarCard({ car, index = 0 }: CarCardProps) {
           <div className="relative aspect-[16/10] overflow-hidden bg-muted">
             <div
               className={`absolute inset-0 bg-gradient-to-br ${gradient} transition-transform duration-700 group-hover:scale-110`}
+            />
+
+            <Image
+              src={car.images[0]}
+              alt={`${car.make} ${car.model}`}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />

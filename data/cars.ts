@@ -8,7 +8,7 @@ export interface DemoCar {
   fuelType: string
   transmission: string
   bodyType: string
-  image: string
+  images: string[]
   badges: ("novo" | "top-ponuda" | "akcija" | "rezervisano" | "prodano")[]
 }
 
@@ -23,7 +23,13 @@ export const demoCars: DemoCar[] = [
     fuelType: "Dizel",
     transmission: "Automatik",
     bodyType: "Hečbek",
-    image: "/images/car-placeholder.jpg",
+    images: [
+      "https://images.unsplash.com/photo-1777132577862-e39d7adf9e1e?w=800&q=80",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&q=80",
+      "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&q=80",
+      "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&q=80",
+      "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800&q=80",
+    ],
     badges: ["novo", "top-ponuda"],
   },
   {
@@ -36,7 +42,13 @@ export const demoCars: DemoCar[] = [
     fuelType: "Dizel",
     transmission: "Automatik",
     bodyType: "Limuzina",
-    image: "/images/car-placeholder.jpg",
+    images: [
+      "https://images.unsplash.com/photo-1617631653485-c6c1281c6367?w=800&q=80",
+      "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80",
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80",
+      "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80",
+      "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80",
+    ],
     badges: ["top-ponuda"],
   },
   {
@@ -49,7 +61,13 @@ export const demoCars: DemoCar[] = [
     fuelType: "Benzin",
     transmission: "Manuelni",
     bodyType: "Hečbek",
-    image: "/images/car-placeholder.jpg",
+    images: [
+      "https://images.unsplash.com/photo-1698267011298-db52f41a0241?w=800&q=80",
+      "https://images.unsplash.com/photo-1502877338535-766e1452684a?w=800&q=80",
+      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80",
+      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&q=80",
+      "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&q=80",
+    ],
     badges: ["novo"],
   },
   {
@@ -62,7 +80,13 @@ export const demoCars: DemoCar[] = [
     fuelType: "Benzin",
     transmission: "Manuelni",
     bodyType: "Hečbek",
-    image: "/images/car-placeholder.jpg",
+    images: [
+      "https://images.unsplash.com/photo-1741873793804-7af918d443fc?w=800&q=80",
+      "https://images.unsplash.com/photo-1590362891991-f776e747a588?w=800&q=80",
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80",
+      "https://images.unsplash.com/photo-1542282088-fe8426682b8f?w=800&q=80",
+      "https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?w=800&q=80",
+    ],
     badges: ["akcija"],
   },
   {
@@ -75,7 +99,13 @@ export const demoCars: DemoCar[] = [
     fuelType: "Dizel",
     transmission: "Manuelni",
     bodyType: "Karavan",
-    image: "/images/car-placeholder.jpg",
+    images: [
+      "https://images.unsplash.com/photo-1751362398745-8794c5ce2187?w=800&q=80",
+      "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&q=80",
+      "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80",
+      "https://images.unsplash.com/photo-1502877338535-766e1452684a?w=800&q=80",
+      "https://images.unsplash.com/photo-1590362891991-f776e747a588?w=800&q=80",
+    ],
     badges: [],
   },
   {
@@ -88,7 +118,13 @@ export const demoCars: DemoCar[] = [
     fuelType: "Hibrid",
     transmission: "Automatik",
     bodyType: "Hečbek",
-    image: "/images/car-placeholder.jpg",
+    images: [
+      "https://images.unsplash.com/photo-1749058983469-11eaef8d7bc5?w=800&q=80",
+      "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=800&q=80",
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80",
+      "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80",
+      "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80",
+    ],
     badges: ["novo", "top-ponuda"],
   },
   {
@@ -101,7 +137,13 @@ export const demoCars: DemoCar[] = [
     fuelType: "Dizel",
     transmission: "Manuelni",
     bodyType: "Hečbek",
-    image: "/images/car-placeholder.jpg",
+    images: [
+      "https://images.unsplash.com/photo-1652674933103-8ca537146b9c?w=800&q=80",
+      "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=800&q=80",
+      "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80",
+      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=800&q=80",
+      "https://images.unsplash.com/photo-1542282088-fe8426682b8f?w=800&q=80",
+    ],
     badges: ["prodano"],
   },
   {
@@ -114,7 +156,13 @@ export const demoCars: DemoCar[] = [
     fuelType: "Benzin",
     transmission: "Manuelni",
     bodyType: "Hečbek",
-    image: "/images/car-placeholder.jpg",
+    images: [
+      "https://images.unsplash.com/photo-1767272791237-9c31f1cb2c70?w=800&q=80",
+      "https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800&q=80",
+      "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80",
+      "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=800&q=80",
+      "https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?w=800&q=80",
+    ],
     badges: ["rezervisano"],
   },
 ]
