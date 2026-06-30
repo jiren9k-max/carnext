@@ -51,28 +51,6 @@ function VWLogo({ className }: { className?: string }) {
   )
 }
 
-function PorscheLogo({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 120 120" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="10" y="10" width="100" height="100" rx="20" className={strokeClass} strokeWidth="4" />
-      <text x="60" y="52" textAnchor="middle" className={fillClass} fontSize="11" fontWeight="700" fontFamily="Geist,sans-serif" letterSpacing="2">PORSCHE</text>
-      <rect x="35" y="60" width="50" height="2" className={fillClass} />
-      <text x="60" y="78" textAnchor="middle" className={fillClass} fontSize="7" fontWeight="600" fontFamily="Geist,sans-serif" letterSpacing="1">STUTTGART</text>
-      <circle cx="60" cy="92" r="5" className={strokeClass} strokeWidth="2" />
-      <line x1="60" y1="87" x2="60" y2="82" className={strokeClass} strokeWidth="2" />
-    </svg>
-  )
-}
-
-function TeslaLogo({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 120 120" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M60 18 L18 102 L60 88 L102 102 L60 18Z" className={strokeClass} strokeWidth="4" strokeLinejoin="round" />
-      <path d="M60 18 L60 88" className={strokeClass} strokeWidth="3" />
-    </svg>
-  )
-}
-
 function ToyotaLogo({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 120 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -94,34 +72,11 @@ function SkodaLogo({ className }: { className?: string }) {
   )
 }
 
-function FordLogo({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 120 80" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="10" y="25" width="100" height="30" rx="15" className={strokeClass} strokeWidth="4" />
-      <text x="60" y="45" textAnchor="middle" className={fillClass} fontSize="16" fontWeight="700" fontFamily="Geist,sans-serif" letterSpacing="3">FORD</text>
-    </svg>
-  )
-}
-
-function VolvoLogo({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 120 120" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="60" cy="60" r="54" className={strokeClass} strokeWidth="5" />
-      <path d="M30 45 L45 75 L60 50 L75 75 L90 45" className={strokeClass} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-      <line x1="45" y1="75" x2="75" y2="75" className={strokeClass} strokeWidth="3" strokeLinecap="round" />
-    </svg>
-  )
-}
-
 export const brands: Brand[] = [
   { id: "bmw", name: "BMW", color: "#0066b4", slug: "bmw", Logo: BMWLogo },
   { id: "mercedes", name: "Mercedes-Benz", color: "#00a19b", slug: "mercedes-benz", Logo: MercedesLogo },
   { id: "audi", name: "Audi", color: "#d4af37", slug: "audi", Logo: AudiLogo },
   { id: "volkswagen", name: "Volkswagen", color: "#1a6b9e", slug: "volkswagen", Logo: VWLogo },
-  { id: "porsche", name: "Porsche", color: "#d4af37", slug: "porsche", Logo: PorscheLogo },
-  { id: "tesla", name: "Tesla", color: "#e82127", slug: "tesla", Logo: TeslaLogo },
   { id: "toyota", name: "Toyota", color: "#e82127", slug: "toyota", Logo: ToyotaLogo },
   { id: "skoda", name: "Škoda", color: "#1a6b3c", slug: "skoda", Logo: SkodaLogo },
-  { id: "ford", name: "Ford", color: "#1a4b8b", slug: "ford", Logo: FordLogo },
-  { id: "volvo", name: "Volvo", color: "#1a6b9e", slug: "volvo", Logo: VolvoLogo },
 ]
