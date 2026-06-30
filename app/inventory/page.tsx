@@ -4,7 +4,7 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { Container } from "@/components/layout/container"
 import { CarCard } from "@/components/cars/car-card"
-import { demoCars } from "@/data/cars"
+import { useCars } from "@/hooks/use-cars"
 
 const fuelTypes = ["Svi", "Benzin", "Dizel", "Hibrid", "Električni"]
 const sortOptions = [
@@ -17,8 +17,9 @@ const sortOptions = [
 export default function InventoryPage() {
   const [activeFuel, setActiveFuel] = useState("Svi")
   const [sort, setSort] = useState("newest")
+  const { cars } = useCars()
 
-  let filtered = activeFuel === "Svi" ? [...demoCars] : demoCars.filter((c) => c.fuelType === activeFuel)
+  const filtered = activeFuel === "Svi" ? [...cars] : cars.filter((c) => c.fuelType === activeFuel)
 
   switch (sort) {
     case "newest":

@@ -6,10 +6,11 @@ import { ArrowRight, Sparkles } from "lucide-react"
 import { Container } from "@/components/layout/container"
 import { CarCard } from "@/components/cars/car-card"
 import { Button } from "@/components/ui/button"
-import { demoCars } from "@/data/cars"
+import { useCars } from "@/hooks/use-cars"
 
 export function FeaturedCars() {
-  const featured = demoCars.filter((c) => !c.badges.includes("prodano")).slice(0, 6)
+  const { cars } = useCars()
+  const featured = cars.filter((c) => !c.badges.includes("prodano")).slice(0, 6)
 
   return (
     <section className="relative overflow-hidden pb-24 pt-16 md:pb-32 md:pt-24">

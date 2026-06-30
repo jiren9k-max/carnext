@@ -9,7 +9,7 @@ import { ArrowLeft, Fuel, Gauge, Calendar, Cog, Car, CheckCircle, Phone, Mail } 
 import { Container } from "@/components/layout/container"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { demoCars } from "@/data/cars"
+import { useCars } from "@/hooks/use-cars"
 
 const badgeConfig: Record<string, { label: string; variant: "default" | "success" | "accent" | "warning" | "secondary" }> = {
   novo: { label: "Novo", variant: "success" },
@@ -30,7 +30,8 @@ function formatPrice(price: number) {
 export default function CarDetailPage() {
   const { id } = useParams<{ id: string }>()
   const router = useRouter()
-  const car = demoCars.find((c) => c.id === id)
+  const { cars } = useCars()
+  const car = cars.find((c) => c.id === id)
   const [selectedImage, setSelectedImage] = useState(0)
 
   if (!car) {
@@ -50,6 +51,8 @@ export default function CarDetailPage() {
     { icon: Cog, label: "Mjenjač", value: car.transmission },
     { icon: Car, label: "Karoserija", value: car.bodyType },
   ]
+  const selectedImageSrc = car.images[selectedImage] ?? car.images[0] ?? ""
+  const imageNeedsNoOptimization = selectedImageSrc?.startsWith("data:")
 
   return (
     <main className="min-h-screen pt-24">
@@ -79,12 +82,13 @@ export default function CarDetailPage() {
                   className="absolute inset-0"
                 >
                   <Image
-                    src={car.images[selectedImage]}
+                    src={selectedImageSrc}
                     alt={`${car.make} ${car.model}`}
                     fill
                     className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 60vw"
                     priority={selectedImage === 0}
+                    unoptimized={imageNeedsNoOptimization}
                   />
                 </motion.div>
               </AnimatePresence>
@@ -120,6 +124,7 @@ export default function CarDetailPage() {
                     width={80}
                     height={60}
                     className="size-20 object-cover md:size-24"
+                    unoptimized={img.startsWith("data:")}
                   />
                 </button>
               ))}

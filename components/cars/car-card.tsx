@@ -48,6 +48,7 @@ interface CarCardProps {
 
 export function CarCard({ car, index = 0 }: CarCardProps) {
   const gradient = makeGradients[car.make] || defaultGradient
+  const imageNeedsNoOptimization = car.images[0]?.startsWith("data:")
 
   return (
     <motion.div
@@ -74,6 +75,7 @@ export function CarCard({ car, index = 0 }: CarCardProps) {
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-110"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              unoptimized={imageNeedsNoOptimization}
             />
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />

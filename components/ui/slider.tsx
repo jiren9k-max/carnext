@@ -11,18 +11,14 @@ function Slider({
   max,
   step = 1,
   formatLabel,
+  defaultValue,
   ...props
 }: React.ComponentProps<typeof SliderPrimitive.Root> & {
   formatLabel?: (value: number) => string
 }) {
-  const [internalValue, setInternalValue] = React.useState(value)
-
-  React.useEffect(() => {
-    setInternalValue(value)
-  }, [value])
-
-  const displayValue = onValueChange ? value : internalValue
-  const handleValueChange = onValueChange || setInternalValue
+  const [internalValue, setInternalValue] = React.useState(defaultValue ?? value)
+  const displayValue = value ?? internalValue
+  const handleValueChange = onValueChange ?? setInternalValue
 
   return (
     <div className="w-full">
@@ -33,6 +29,7 @@ function Slider({
           className
         )}
         value={displayValue}
+        defaultValue={defaultValue}
         onValueChange={handleValueChange}
         min={min}
         max={max}
