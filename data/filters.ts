@@ -1,64 +1,54 @@
 export const makes = [
+  "Škoda",
+  "Peugeot",
+  "Renault",
+  "Kia",
+  "Hyundai",
+  "Volkswagen",
   "BMW",
   "Mercedes-Benz",
+  "Land Rover",
+  "Citroen",
+  "Nissan",
+  "Smart",
   "Audi",
-  "Porsche",
-  "Volkswagen",
-  "Tesla",
-  "Lexus",
-  "Volvo",
-  "Range Rover",
-  "Ferrari",
-  "Lamborghini",
-  "Maserati",
-  "Bentley",
-  "Rolls-Royce",
-  "McLaren",
 ]
 
 export const models: Record<string, string[]> = {
-  BMW: ["Serija 3", "Serija 5", "Serija 7", "X5", "X7", "M3", "M5", "i4", "iX"],
-  "Mercedes-Benz": ["C-Class", "E-Class", "S-Class", "GLC", "GLE", "G-Class", "AMG GT", "EQS"],
-  Audi: ["A4", "A6", "A8", "Q5", "Q7", "e-tron", "R8", "RS6"],
-  Porsche: ["911", "Cayenne", "Panamera", "Taycan", "Macan", "Carrera GT"],
-  Volkswagen: ["Golf", "Passat", "Tiguan", "ID.4", "Arteon"],
-  Tesla: ["Model 3", "Model Y", "Model S", "Model X", "Cybertruck"],
-  Lexus: ["IS", "ES", "RX", "NX", "LX", "LC"],
-  Volvo: ["S60", "S90", "XC40", "XC60", "XC90"],
-  "Range Rover": ["Evoque", "Velar", "Sport", "Vogue", "SV Autobiography"],
-  Ferrari: ["SF90 Stradale", "296 GTB", "F8 Tributo", "Roma", "Purosangue"],
-  Lamborghini: ["Huracán", "Revuelto", "Urus"],
-  Maserati: ["Ghibli", "Quattroporte", "MC20", "Grecale"],
-  Bentley: ["Continental GT", "Bentayga", "Flying Spur"],
-  "Rolls-Royce": ["Ghost", "Phantom", "Cullinan", "Spectre"],
-  McLaren: ["Artura", "720S", "GT"],
+  Škoda: ["Kamiq", "Octavia", "Fabia", "Superb"],
+  Peugeot: ["3008", "208", "308"],
+  Renault: ["Megane", "Clio"],
+  Kia: ["Ceed"],
+  Hyundai: ["i30", "Santa Fe"],
+  Volkswagen: ["Buba / Beetle", "Golf", "Caddy"],
+  BMW: ["520", "X3"],
+  "Mercedes-Benz": ["A 180"],
+  "Land Rover": ["Range Rover Evoque"],
+  Citroen: ["DS3"],
+  Nissan: ["Qashqai"],
+  Smart: ["ForTwo"],
+  Audi: ["S3"],
 }
 
-export const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid", "Plug-in Hybrid"]
+export const fuelTypes = ["Benzin", "Dizel"]
 
-export const transmissions = ["Manual", "Automatic", "Semi-Automatic"]
+export const transmissions = ["Manuelni", "Automatik"]
 
-export const drivetrains = ["Front-Wheel Drive", "Rear-Wheel Drive", "All-Wheel Drive", "Four-Wheel Drive"]
+export const drivetrains = ["Prednji pogon", "Stražnji pogon", "Pogon na sve kotače"]
 
-export const bodyTypes = ["Sedan", "SUV", "Coupe", "Convertible", "Hatchback", "Wagon", "Pickup", "Van"]
+export const bodyTypes = ["SUV", "Limuzina", "Hečbek", "Karavan", "Mini", "Coupe", "Kabriolet"]
 
 export const locations = [
   "Sarajevo",
-  "Zagreb",
-  "Beograd",
-  "Ljubljana",
-  "Podgorica",
-  "Skoplje",
-  "Banja Luka",
+  "Ilidža",
   "Mostar",
   "Tuzla",
-  "Novi Sad",
-  "Split",
-  "Rijeka",
+  "Zenica",
+  "Banja Luka",
 ]
 
-export const yearRange = { min: 2015, max: new Date().getFullYear() + 1 }
+export const yearRange = { min: 2010, max: 2025 }
 
-export const priceRange = { min: 5000, max: 500000 }
+export const priceRange = { min: 0, max: 80000 }
 
-export const mileageRange = { min: 0, max: 250000 }
+export const mileageRange = { min: 100000, max: 300000 }

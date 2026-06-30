@@ -7,7 +7,15 @@ export function LoadingScreen() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1200)
+    const hasVisited = sessionStorage.getItem("carnext-loaded")
+    if (hasVisited) {
+      setIsLoading(false)
+      return
+    }
+    const timer = setTimeout(() => {
+      sessionStorage.setItem("carnext-loaded", "true")
+      setIsLoading(false)
+    }, 1200)
     return () => clearTimeout(timer)
   }, [])
 

@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { ArrowRight, Sparkles } from "lucide-react"
@@ -9,7 +10,13 @@ import { Button } from "@/components/ui/button"
 import { demoCars } from "@/data/cars"
 
 export function FeaturedCars() {
-  const featured = demoCars.filter((c) => !c.badges.includes("prodano")).slice(0, 6)
+  const [activeTag, setActiveTag] = useState("Svi")
+  const available = demoCars.filter((c) => !c.badges.includes("prodano"))
+  const featured = activeTag === "Svi" ? available.slice(0, 6)
+    : activeTag === "Novi" ? available.filter((c) => c.badges.includes("novo")).slice(0, 6)
+    : activeTag === "Polovni" ? available.filter((c) => !c.badges.includes("novo")).slice(0, 6)
+    : activeTag === "Električni" ? available.filter((c) => c.fuelType === "Električni").slice(0, 6)
+    : available.slice(0, 6)
 
   return (
     <section className="relative overflow-hidden pb-24 pt-16 md:pb-32 md:pt-24">
@@ -39,14 +46,19 @@ export function FeaturedCars() {
 
           <div className="mt-6 flex justify-center gap-3">
             {[
-              { tag: "Svi", color: "hover:border-primary/30 hover:text-primary" },
-              { tag: "Novi", color: "hover:border-emerald-500/30 hover:text-emerald-400" },
-              { tag: "Polovni", color: "hover:border-blue-500/30 hover:text-blue-400" },
-              { tag: "Električni", color: "hover:border-purple-500/30 hover:text-purple-400" },
-            ].map(({ tag, color }) => (
+              { tag: "Svi", active: "border-primary/50 text-primary bg-primary/10" },
+              { tag: "Novi", active: "border-emerald-500/50 text-emerald-400 bg-emerald-500/10" },
+              { tag: "Polovni", active: "border-blue-500/50 text-blue-400 bg-blue-500/10" },
+              { tag: "Električni", active: "border-purple-500/50 text-purple-400 bg-purple-500/10" },
+            ].map(({ tag, active }) => (
               <button
                 key={tag}
-                className={`rounded-full border border-border bg-transparent px-4 py-1.5 text-small text-muted-foreground transition-colors ${color}`}
+                onClick={() => setActiveTag(tag)}
+                className={`rounded-full border px-4 py-1.5 text-small transition-colors ${
+                  activeTag === tag
+                    ? active
+                    : "border-border bg-transparent text-muted-foreground hover:border-primary/30 hover:text-primary"
+                }`}
               >
                 {tag}
               </button>

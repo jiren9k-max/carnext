@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Search as SearchIcon, RotateCcw } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -61,6 +62,7 @@ const formatMileage = (v: number) =>
   v >= 1000 ? `${(v / 1000).toFixed(0)}k km` : `${v} km`
 
 export function SearchSection() {
+  const router = useRouter()
   const [filters, setFilters] = useState<Filters>(initialFilters)
   const [selectedMake, setSelectedMake] = useState("")
 
@@ -75,6 +77,29 @@ export function SearchSection() {
   const resetFilters = () => {
     setFilters(initialFilters)
     setSelectedMake("")
+  }
+
+  const handleSearch = () => {
+    const params = new URLSearchParams()
+    if (filters.make) params.set("make", filters.make)
+    if (filters.model) params.set("model", filters.model)
+    if (filters.fuel) params.set("fuel", filters.fuel)
+    if (filters.transmission) params.set("transmission", filters.transmission)
+    if (filters.bodyType) params.set("bodyType", filters.bodyType)
+    if (filters.location) params.set("location", filters.location)
+    if (filters.year[0] !== yearRange.min || filters.year[1] !== yearRange.max) {
+      params.set("minYear", String(filters.year[0]))
+      params.set("maxYear", String(filters.year[1]))
+    }
+    if (filters.price[0] !== priceRange.min || filters.price[1] !== priceRange.max) {
+      params.set("minPrice", String(filters.price[0]))
+      params.set("maxPrice", String(filters.price[1]))
+    }
+    if (filters.mileage[0] !== mileageRange.min || filters.mileage[1] !== mileageRange.max) {
+      params.set("minMileage", String(filters.mileage[0]))
+      params.set("maxMileage", String(filters.mileage[1]))
+    }
+    router.push(`/inventory${params.toString() ? `?${params.toString()}` : ""}`)
   }
 
   const availableModels = selectedMake ? models[selectedMake] || [] : []
@@ -258,7 +283,7 @@ export function SearchSection() {
           </div>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <Button size="lg" className="gap-2 px-8">
+            <Button size="lg" className="gap-2 px-8" onClick={handleSearch}>
               <SearchIcon className="size-4" />
               Pretraži vozila
             </Button>

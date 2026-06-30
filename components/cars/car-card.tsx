@@ -24,14 +24,17 @@ const makeGradients: Record<string, string> = {
   Volkswagen: "from-[#004e92] to-[#002855]",
   Škoda: "from-[#4ba83d] to-[#2d6b24]",
   Renault: "from-[#ffc423] to-[#cc9c00]",
-  Dacia: "from-[#e30613] to-[#9e0b14]",
-  Ford: "from-[#2c5f9e] to-[#1a3b63]",
   Toyota: "from-[#e72123] to-[#a31618]",
   Hyundai: "from-[#00a2ed] to-[#006ba8]",
-  Suzuki: "from-[#e30613] to-[#9e0b14]",
   Peugeot: "from-[#6f2086] to-[#4a1559]",
   BMW: "from-[#0696d6] to-[#04567d]",
   Kia: "from-[#bb162b] to-[#810f1d]",
+  "Mercedes-Benz": "from-[#00a19b] to-[#006d68]",
+  "Land Rover": "from-[#006f4c] to-[#003d29]",
+  Citroen: "from-[#a3a3a3] to-[#6b6b6b]",
+  Nissan: "from-[#c3002f] to-[#850020]",
+  Smart: "from-[#e30613] to-[#9e0b14]",
+  Audi: "from-[#d4af37] to-[#8a701f]",
 }
 
 const defaultGradient = "from-[#2A2A2A] to-[#171717]"
@@ -41,6 +44,7 @@ function formatMileage(km: number) {
 }
 
 function formatPrice(price: number) {
+  if (price === 0) return "Cijena na upit"
   return `${price.toLocaleString("de-DE")} KM`
 }
 
@@ -129,8 +133,8 @@ export function CarCard({ car, index = 0 }: CarCardProps) {
 
           <div className="mt-4 flex items-center justify-between border-t border-border/50 pt-4">
             <div>
-              <span className="text-small text-muted-foreground">Cijena od</span>
-              <p className="text-h4 font-bold text-primary">
+              {car.price > 0 && <span className="text-small text-muted-foreground">Cijena od</span>}
+              <p className={`font-bold ${car.price > 0 ? "text-h4 text-primary" : "text-body-sm text-muted-foreground"}`}>
                 {formatPrice(car.price)}
               </p>
             </div>
