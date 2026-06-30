@@ -29,6 +29,9 @@ const makeGradients: Record<string, string> = {
   Toyota: "from-[#e72123] to-[#a31618]",
   Hyundai: "from-[#00a2ed] to-[#006ba8]",
   Suzuki: "from-[#e30613] to-[#9e0b14]",
+  Peugeot: "from-[#6f2086] to-[#4a1559]",
+  BMW: "from-[#0696d6] to-[#04567d]",
+  Kia: "from-[#bb162b] to-[#810f1d]",
 }
 
 const defaultGradient = "from-[#2A2A2A] to-[#171717]"
