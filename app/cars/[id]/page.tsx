@@ -5,9 +5,10 @@ import Link from "next/link"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { ArrowLeft, Fuel, Gauge, Calendar, Cog, Car, CheckCircle, Phone, Mail } from "lucide-react"
+import { ArrowLeft, Fuel, Gauge, Calendar, Cog, Car, CheckCircle, Phone, Send, X } from "lucide-react"
 import { Container } from "@/components/layout/container"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { demoCars } from "@/data/cars"
 
@@ -32,6 +33,27 @@ export default function CarDetailPage() {
   const router = useRouter()
   const car = demoCars.find((c) => c.id === id)
   const [selectedImage, setSelectedImage] = useState(0)
+  const [showForm, setShowForm] = useState(false)
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" })
+  const [sending, setSending] = useState(false)
+  const [sent, setSent] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setSending(true)
+    try {
+      await fetch("/api/inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, vehicle: `${car?.make} ${car?.model}` }),
+      })
+      setSent(true)
+    } catch {
+      alert("Došlo je do greške. Molimo pokušajte ponovo.")
+    } finally {
+      setSending(false)
+    }
+  }
 
   if (!car) {
     return (
@@ -167,17 +189,81 @@ export default function CarDetailPage() {
             )}
 
             <div className="mt-8 space-y-3">
-              <Button size="lg" className="w-full gap-2">
-                <Phone className="size-4" />
-                Pozovite 061 911 654
+              <Button size="lg" className="w-full gap-2" asChild>
+                <a href="tel:+38761911654">
+                  <Phone className="size-4" />
+                  Pozovite 061 911 654
+                </a>
               </Button>
-              <Button variant="outline" size="lg" className="w-full gap-2" asChild>
-                <Link href="mailto:info@carnext.ba">
-                  <Mail className="size-4" />
+              {!showForm && !sent && (
+                <Button variant="outline" size="lg" className="w-full gap-2" onClick={() => setShowForm(true)}>
+                  <Send className="size-4" />
                   Pošaljite upit
-                </Link>
-              </Button>
+                </Button>
+              )}
             </div>
+
+            {showForm && !sent && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-4 rounded-lg border border-border/50 bg-card/50 p-4"
+              >
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="text-h6 text-foreground">Pošaljite upit za {car.make} {car.model}</p>
+                  <button onClick={() => setShowForm(false)} className="text-muted-foreground hover:text-foreground">
+                    <X className="size-4" />
+                  </button>
+                </div>
+                <form onSubmit={handleSubmit} className="space-y-3">
+                  <Input
+                    placeholder="Ime i prezime"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    required
+                  />
+                  <Input
+                    type="email"
+                    placeholder="Email"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    required
+                  />
+                  <Input
+                    type="tel"
+                    placeholder="Telefon"
+                    value={form.phone}
+                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  />
+                  <textarea
+                    placeholder="Vaša poruka..."
+                    value={form.message}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    required
+                    rows={4}
+                    className="w-full rounded-lg border border-border bg-transparent px-4 py-3 text-body text-foreground outline-none transition-colors placeholder:text-muted-foreground/50 focus:border-ring/70"
+                  />
+                  <Button type="submit" size="lg" className="w-full gap-2" disabled={sending}>
+                    <Send className="size-4" />
+                    {sending ? "Slanje..." : "Pošalji"}
+                  </Button>
+                </form>
+              </motion.div>
+            )}
+
+            {sent && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-4 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-6 text-center"
+              >
+                <CheckCircle className="mx-auto mb-2 size-8 text-emerald-500" />
+                <p className="text-h6 text-foreground mb-1">Upit poslan!</p>
+                <p className="text-body-sm text-muted-foreground">
+                  Odgovorit ćemo u najkraćem mogućem roku.
+                </p>
+              </motion.div>
+            )}
 
             <div className="mt-6 rounded-lg border border-border/50 bg-card/30 p-4">
               <h3 className="text-h6 text-foreground mb-2">Lokacija vozila</h3>
