@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Mail, Phone, MapPin, Clock, Send } from "lucide-react"
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from "lucide-react"
 import { Container } from "@/components/layout/container"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,15 +10,23 @@ import { Input } from "@/components/ui/input"
 export default function ContactPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" })
   const [sent, setSent] = useState(false)
+  const [sending, setSending] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const subject = encodeURIComponent("Upit sa CarNext.ba")
-    const body = encodeURIComponent(
-      `Ime: ${form.name}\nEmail: ${form.email}\nTelefon: ${form.phone}\n\nPoruka:\n${form.message}`
-    )
-    window.location.href = `mailto:info@carnextsarajevo.com?subject=${subject}&body=${body}`
-    setSent(true)
+    setSending(true)
+    try {
+      await fetch("/api/inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      })
+      setSent(true)
+    } catch {
+      alert("Došlo je do greške. Molimo pokušajte ponovo.")
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -44,10 +52,11 @@ export default function ContactPage() {
           >
             <h2 className="mb-6 text-h3 text-foreground">Pošaljite nam poruku</h2>
             {sent ? (
-              <div className="rounded-xl border border-primary/30 bg-primary/5 p-6 text-center">
-                <Send className="mx-auto mb-3 size-8 text-primary" />
-                <p className="text-body text-foreground">
-                  Hvala! Vaš email klijent je otvoren.
+              <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-8 text-center">
+                <CheckCircle className="mx-auto mb-4 size-10 text-emerald-500" />
+                <p className="text-h5 text-foreground mb-2">Poruka poslana!</p>
+                <p className="text-body-sm text-muted-foreground">
+                  Hvala vam! Odgovorit ćemo u najkraćem mogućem roku.
                 </p>
               </div>
             ) : (
@@ -99,9 +108,9 @@ export default function ContactPage() {
                     className="w-full rounded-lg border border-border bg-transparent px-4 py-3 text-body text-foreground outline-none transition-colors placeholder:text-muted-foreground/50 focus:border-ring/70"
                   />
                 </div>
-                <Button type="submit" size="lg" className="w-full gap-2">
+                <Button type="submit" size="lg" className="w-full gap-2" disabled={sending}>
                   <Send className="size-4" />
-                  Pošalji poruku
+                  {sending ? "Slanje..." : "Pošalji poruku"}
                 </Button>
               </form>
             )}
