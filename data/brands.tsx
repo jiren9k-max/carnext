@@ -51,17 +51,6 @@ function VWLogo({ className }: { className?: string }) {
   )
 }
 
-function ToyotaLogo({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 120 100" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="60" cy="45" rx="38" ry="18" className={strokeClass} strokeWidth="3.5" />
-      <ellipse cx="60" cy="45" rx="18" ry="38" className={strokeClass} strokeWidth="3.5" />
-      <circle cx="60" cy="45" r="6" className={fillClass} />
-      <text x="60" y="86" textAnchor="middle" className={fillClass} fontSize="10" fontWeight="700" fontFamily="Geist,sans-serif" letterSpacing="1">TOYOTA</text>
-    </svg>
-  )
-}
-
 function SkodaLogo({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 120 120" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -77,6 +66,5 @@ export const brands: Brand[] = [
   { id: "mercedes", name: "Mercedes-Benz", color: "#00a19b", slug: "mercedes-benz", Logo: MercedesLogo },
   { id: "audi", name: "Audi", color: "#d4af37", slug: "audi", Logo: AudiLogo },
   { id: "volkswagen", name: "Volkswagen", color: "#1a6b9e", slug: "volkswagen", Logo: VWLogo },
-  { id: "toyota", name: "Toyota", color: "#e82127", slug: "toyota", Logo: ToyotaLogo },
   { id: "skoda", name: "Škoda", color: "#1a6b3c", slug: "skoda", Logo: SkodaLogo },
 ]
