@@ -1,11 +1,36 @@
 "use client"
 
+import { useState, useEffect } from "react"
+import Link from "next/link"
 import { Car, Users, MessageSquare, Eye, TrendingUp, DollarSign } from "lucide-react"
 import { StatCard } from "@/components/admin/stat-card"
-import { adminUsers, inquiries, adminVehicles } from "@/data/admin"
+import type { AdminVehicle, Inquiry } from "@/data/admin"
 
 export default function AdminDashboard() {
-  const totalRevenue = adminVehicles.reduce((sum, v) => sum + v.price, 0)
+  const [vehicles, setVehicles] = useState<AdminVehicle[]>([])
+  const [inquiries, setInquiries] = useState<Inquiry[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    Promise.all([
+      fetch("/api/vehicles").then((r) => r.json()),
+      fetch("/api/inquiries").then((r) => r.json()),
+    ]).then(([v, i]) => {
+      setVehicles(v)
+      setInquiries(i)
+      setLoading(false)
+    })
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      </div>
+    )
+  }
+
+  const totalRevenue = vehicles.reduce((sum, v) => sum + v.price, 0)
   const newInquiries = inquiries.filter((i) => i.status === "new").length
 
   return (
@@ -16,8 +41,8 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        <StatCard label="Ukupno vozila" value={String(adminVehicles.length)} icon={Car} change="+2 this month" positive />
-        <StatCard label="Korisnici" value={String(adminUsers.length)} icon={Users} change="+1 this month" positive />
+        <StatCard label="Ukupno vozila" value={String(vehicles.length)} icon={Car} change="+2 this month" positive />
+        <StatCard label="Korisnici" value="5" icon={Users} change="+1 this month" positive />
         <StatCard label="Upiti" value={String(inquiries.length)} icon={MessageSquare} change={`${newInquiries} new`} positive />
         <StatCard label="Pregledi" value="4,892" icon={Eye} change="+12.5%" positive />
         <StatCard label="Prihod" value={`${(totalRevenue / 1000000).toFixed(1)}M KM`} icon={DollarSign} change="+8.3%" positive />
@@ -51,16 +76,16 @@ export default function AdminDashboard() {
             {[
               { label: "Dodaj vozilo", href: "/admin/vehicles/add" },
               { label: "Pregled upita", href: "/admin/inquiries" },
-              { label: "Novi blog", href: "/admin/blog" },
+              { label: "Novi blog", href: "/admin/blog/new" },
               { label: "Promocije", href: "/admin/promotions" },
             ].map((action) => (
-              <a
+              <Link
                 key={action.label}
                 href={action.href}
                 className="flex items-center justify-center rounded-lg border border-border bg-muted/50 p-4 text-body-sm text-foreground transition-colors hover:bg-muted hover:border-primary/20"
               >
                 {action.label}
-              </a>
+              </Link>
             ))}
           </div>
         </div>

@@ -1,12 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Plus, Pencil, Trash2, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { adminVehicles, type AdminVehicle } from "@/data/admin"
+import type { AdminVehicle } from "@/data/admin"
 
 const statusBadge: Record<AdminVehicle["status"], { label: string; variant: "success" | "accent" | "warning" | "secondary" }> = {
   available: { label: "Dostupno", variant: "success" },
@@ -17,8 +17,13 @@ const statusBadge: Record<AdminVehicle["status"], { label: string; variant: "suc
 
 export default function VehiclesPage() {
   const [search, setSearch] = useState("")
+  const [vehicles, setVehicles] = useState<AdminVehicle[]>([])
 
-  const filtered = adminVehicles.filter((v) =>
+  useEffect(() => {
+    fetch("/api/vehicles").then((r) => r.json()).then(setVehicles)
+  }, [])
+
+  const filtered = vehicles.filter((v) =>
     `${v.make} ${v.model} ${v.year}`.toLowerCase().includes(search.toLowerCase())
   )
 

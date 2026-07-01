@@ -2,12 +2,12 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { ArrowLeft, Upload, X } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Input, InputLabel } from "@/components/ui/input"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
-import { InputLabel, InputError } from "@/components/ui/input"
 import { makes, fuelTypes, transmissions, bodyTypes, locations } from "@/data/filters"
+import { FileUpload } from "@/components/shared/file-upload"
 
 export default function AddVehiclePage() {
   const router = useRouter()
@@ -145,40 +145,12 @@ export default function AddVehiclePage() {
         <div className="space-y-6">
           <div className="rounded-[var(--radius)] border border-border bg-card p-5">
             <h3 className="text-h6 text-foreground mb-4">Slike</h3>
-            <div className="grid grid-cols-3 gap-2">
-              {images.map((_, i) => (
-                <div key={i} className="relative aspect-square rounded-lg bg-muted flex items-center justify-center">
-                  <button className="absolute -right-1.5 -top-1.5 flex size-5 items-center justify-center rounded-full bg-destructive text-white">
-                    <X className="size-3" />
-                  </button>
-                  <span className="text-caption text-muted-foreground">Slika {i + 1}</span>
-                </div>
-              ))}
-              <button
-                onClick={() => setImages([...images, ""])}
-                className="flex aspect-square items-center justify-center rounded-lg border-2 border-dashed border-border text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
-              >
-                <Upload className="size-5" />
-              </button>
-            </div>
+            <FileUpload type="image" value={images} onChange={setImages} maxFiles={20} />
           </div>
 
           <div className="rounded-[var(--radius)] border border-border bg-card p-5">
             <h3 className="text-h6 text-foreground mb-4">Video</h3>
-            <div className="space-y-2">
-              {videos.map((_, i) => (
-                <div key={i} className="flex items-center gap-2 rounded-lg border border-border/50 p-2">
-                  <span className="flex-1 text-small text-muted-foreground">Video {i + 1}</span>
-                  <button className="text-destructive hover:text-destructive"><X className="size-3.5" /></button>
-                </div>
-              ))}
-              <button
-                onClick={() => setVideos([...videos, ""])}
-                className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border py-3 text-small text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
-              >
-                <Upload className="size-4" /> Dodaj video
-              </button>
-            </div>
+            <FileUpload type="video" value={videos} onChange={setVideos} maxFiles={5} />
           </div>
 
           <div className="rounded-[var(--radius)] border border-border bg-card p-5">

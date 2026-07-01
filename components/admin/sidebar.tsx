@@ -2,10 +2,10 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
   LayoutDashboard, Car, Users, MessageSquare, FileText, Search,
-  Percent, Settings, BarChart3, ChevronLeft, X,
+  Percent, Settings, BarChart3, ChevronLeft, X, LogOut,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -28,6 +28,12 @@ interface SidebarProps {
 
 export function Sidebar({ open, onClose }: SidebarProps) {
   const pathname = usePathname()
+  const router = useRouter()
+
+  async function handleLogout() {
+    await fetch("/api/auth/logout", { method: "POST" })
+    router.push("/admin/login")
+  }
 
   return (
     <>
@@ -76,11 +82,15 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           })}
         </nav>
 
-        <div className="border-t border-border p-4">
-          <Link href="/" className="flex items-center gap-2 text-small text-muted-foreground hover:text-foreground transition-colors">
+        <div className="border-t border-border p-4 space-y-1">
+          <Link href="/" className="flex items-center gap-2 text-small text-muted-foreground hover:text-foreground transition-colors py-1.5">
             <ChevronLeft className="size-3.5" />
             Nazad na sajt
           </Link>
+          <button onClick={handleLogout} className="flex w-full items-center gap-2 text-small text-muted-foreground hover:text-destructive transition-colors py-1.5">
+            <LogOut className="size-3.5" />
+            Odjavi se
+          </button>
         </div>
       </aside>
     </>

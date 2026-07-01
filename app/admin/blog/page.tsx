@@ -1,11 +1,19 @@
 "use client"
 
+import { useState, useEffect } from "react"
+import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Plus, Eye } from "lucide-react"
-import { blogPosts } from "@/data/admin"
+import { Plus, Eye, Pencil } from "lucide-react"
+import type { BlogPost } from "@/data/admin"
 
 export default function BlogPage() {
+  const [posts, setPosts] = useState<BlogPost[]>([])
+
+  useEffect(() => {
+    fetch("/api/blog").then((r) => r.json()).then(setPosts)
+  }, [])
+
   return (
     <div>
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -13,12 +21,18 @@ export default function BlogPage() {
           <h1 className="text-h3 text-foreground">Blog</h1>
           <p className="mt-1 text-body-sm text-muted-foreground">Upravljajte blog postovima.</p>
         </div>
-        <Button className="gap-2"><Plus className="size-4" /> Novi post</Button>
+        <Button asChild className="gap-2">
+          <Link href="/admin/blog/new"><Plus className="size-4" /> Novi post</Link>
+        </Button>
       </div>
 
       <div className="space-y-3">
-        {blogPosts.map((post) => (
-          <div key={post.id} className="flex items-start justify-between rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/20">
+        {posts.map((post) => (
+          <Link
+            key={post.id}
+            href={`/admin/blog/${post.id}/edit`}
+            className="group flex items-start justify-between rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/20"
+          >
             <div className="min-w-0 flex-1">
               <h3 className="text-h6 text-foreground">{post.title}</h3>
               <p className="mt-1 text-body-sm text-muted-foreground">{post.excerpt}</p>
@@ -30,10 +44,13 @@ export default function BlogPage() {
                 )}
               </div>
             </div>
-            <Badge variant={post.status === "published" ? "success" : "secondary"} size="sm" className="shrink-0 ml-4">
-              {post.status === "published" ? "Objavljeno" : "Skica"}
-            </Badge>
-          </div>
+            <div className="flex items-center gap-3 shrink-0 ml-4">
+              <Badge variant={post.status === "published" ? "success" : "secondary"} size="sm">
+                {post.status === "published" ? "Objavljeno" : "Skica"}
+              </Badge>
+              <Pencil className="size-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+          </Link>
         ))}
       </div>
     </div>
