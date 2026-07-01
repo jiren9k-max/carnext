@@ -12,13 +12,10 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-  SelectGroup,
-  SelectLabel,
 } from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
 import {
   makes,
-  models,
   fuelTypes,
   transmissions,
   drivetrains,
@@ -31,7 +28,6 @@ import {
 
 interface Filters {
   make: string
-  model: string
   year: number[]
   price: number[]
   mileage: number[]
@@ -44,7 +40,6 @@ interface Filters {
 
 const initialFilters: Filters = {
   make: "",
-  model: "",
   year: [yearRange.min, yearRange.max],
   price: [priceRange.min, priceRange.max],
   mileage: [mileageRange.min, mileageRange.max],
@@ -64,25 +59,18 @@ const formatMileage = (v: number) =>
 export function SearchSection() {
   const router = useRouter()
   const [filters, setFilters] = useState<Filters>(initialFilters)
-  const [selectedMake, setSelectedMake] = useState("")
 
   const updateFilter = <K extends keyof Filters>(key: K, value: Filters[K]) => {
     setFilters((prev) => ({ ...prev, [key]: value }))
-    if (key === "make") {
-      setSelectedMake(value as string)
-      setFilters((prev) => ({ ...prev, model: "" }))
-    }
   }
 
   const resetFilters = () => {
     setFilters(initialFilters)
-    setSelectedMake("")
   }
 
   const handleSearch = () => {
     const params = new URLSearchParams()
     if (filters.make) params.set("make", filters.make)
-    if (filters.model) params.set("model", filters.model)
     if (filters.fuel) params.set("fuel", filters.fuel)
     if (filters.transmission) params.set("transmission", filters.transmission)
     if (filters.bodyType) params.set("bodyType", filters.bodyType)
@@ -102,8 +90,6 @@ export function SearchSection() {
     router.push(`/inventory${params.toString() ? `?${params.toString()}` : ""}`)
   }
 
-  const availableModels = selectedMake ? models[selectedMake] || [] : []
-
   return (
     <section className="relative -mt-24 pb-16 md:-mt-28">
       <motion.div
@@ -115,42 +101,16 @@ export function SearchSection() {
         <Card variant="glass-strong" padding="xl" className="mx-auto max-w-6xl">
           <div className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2 lg:grid-cols-3">
             <FilterField label="Marka">
-              <Select
+              <select
                 value={filters.make}
-                onValueChange={(v) => updateFilter("make", v)}
+                onChange={(e) => updateFilter("make", e.target.value)}
+                className="flex h-9 w-full rounded-lg border border-border bg-transparent px-3 py-2 text-sm text-foreground shadow-sm transition-colors focus-visible:border-ring/70 focus-visible:ring-3 focus-visible:ring-ring/20"
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sve marke" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">Sve marke</SelectItem>
-                  {makes.map((m) => (
-                    <SelectItem key={m} value={m}>
-                      {m}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </FilterField>
-
-            <FilterField label="Model">
-              <Select
-                value={filters.model}
-                onValueChange={(v) => updateFilter("model", v)}
-                disabled={!selectedMake}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder={selectedMake ? "Svi modeli" : "Izaberite marku"} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">Svi modeli</SelectItem>
-                  {availableModels.map((m) => (
-                    <SelectItem key={m} value={m}>
-                      {m}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                <option value="" className="bg-background">Sve marke</option>
+                {makes.map((m) => (
+                  <option key={m} value={m} className="bg-background">{m}</option>
+                ))}
+              </select>
             </FilterField>
 
             <FilterField label="Godište">

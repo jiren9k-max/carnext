@@ -40,11 +40,6 @@ export const bodyTypes = ["SUV", "Limuzina", "Hečbek", "Karavan", "Mini", "Coup
 
 export const locations = [
   "Sarajevo",
-  "Ilidža",
-  "Mostar",
-  "Tuzla",
-  "Zenica",
-  "Banja Luka",
 ]
 
 export const yearRange = { min: 2010, max: 2025 }
