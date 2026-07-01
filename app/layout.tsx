@@ -27,7 +27,7 @@ const siteConfig = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0B0B0B",
+  themeColor: "#0A0A0A",
   width: "device-width",
   initialScale: 1,
 };

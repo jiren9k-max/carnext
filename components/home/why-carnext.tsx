@@ -19,19 +19,19 @@ import { Container } from "@/components/layout/container"
 import { Card } from "@/components/ui/card"
 
 const features = [
-  { icon: ShieldCheck, title: "Provjerena vozila", description: "Svako vozilo prolazi detaljnu tehničku provjeru prije prodaje.", color: "emerald" },
-  { icon: FileSearch, title: "Transparentna historija", description: "Potpuni uvid u servisnu i vlasničku historiju vozila.", color: "blue" },
-  { icon: HeadphonesIcon, title: "Profesionalna podrška", description: "Tim stručnjaka na raspolaganju za sva vaša pitanja.", color: "purple" },
-  { icon: PiggyBank, title: "Finansiranje", description: "Povoljne opcije kreditiranja i lizinga prilagođene vama.", color: "amber" },
-  { icon: RefreshCw, title: "Zamjena staro za novo", description: "Vaš stari automobil mijenjamo za novi uz najbolju ponudu.", color: "teal" },
-  { icon: Zap, title: "Brza obrada upita", description: "Odgovaramo u roku od nekoliko sati, bez nepotrebnog čekanja.", color: "primary" },
+  { icon: ShieldCheck, title: "Provjerena vozila", description: "Svako vozilo prolazi detaljnu tehničku provjeru prije prodaje." },
+  { icon: FileSearch, title: "Transparentna historija", description: "Potpuni uvid u servisnu i vlasničku historiju vozila." },
+  { icon: HeadphonesIcon, title: "Profesionalna podrška", description: "Tim stručnjaka na raspolaganju za sva vaša pitanja." },
+  { icon: PiggyBank, title: "Finansiranje", description: "Povoljne opcije kreditiranja i lizinga prilagođene vama." },
+  { icon: RefreshCw, title: "Zamjena staro za novo", description: "Vaš stari automobil mijenjamo za novi uz najbolju ponudu." },
+  { icon: Zap, title: "Brza obrada upita", description: "Odgovaramo u roku od nekoliko sati, bez nepotrebnog čekanja." },
 ]
 
 const steps = [
-  { icon: Search, title: "Pronađite vozilo", description: "Pretražite našu kolekciju premium vozila i pronađite savršen auto za sebe.", color: "blue" },
-  { icon: MessageCircle, title: "Kontaktirajte nas", description: "Pošaljite upit ili nas pozovite. Naš tim će vam odgovoriti u najkraćem roku.", color: "amber" },
-  { icon: Car, title: "Testna vožnja", description: "Dogovorite testnu vožnju i osjetite razliku. Uvjereni smo da ćete biti oduševljeni.", color: "primary" },
-  { icon: KeyRound, title: "Preuzmite automobil", description: "Završite kupovinu i preuzmite vozilo. Pokrivamo sve formalnosti umjesto vas.", color: "emerald" },
+  { icon: Search, title: "Pronađite vozilo", description: "Pretražite našu kolekciju premium vozila i pronađite savršen auto za sebe." },
+  { icon: MessageCircle, title: "Kontaktirajte nas", description: "Pošaljite upit ili nas pozovite. Naš tim će vam odgovoriti u najkraćem roku." },
+  { icon: Car, title: "Testna vožnja", description: "Dogovorite testnu vožnju i osjetite razliku. Uvjereni smo da ćete biti oduševljeni." },
+  { icon: KeyRound, title: "Preuzmite automobil", description: "Završite kupovinu i preuzmite vozilo. Pokrivamo sve formalnosti umjesto vas." },
 ]
 
 const counters = [
@@ -83,29 +83,19 @@ function AnimatedCounter({
   )
 }
 
-const colorMap: Record<string, { bg: string; text: string }> = {
-  emerald: { bg: "bg-emerald-500/10", text: "text-emerald-500" },
-  blue: { bg: "bg-blue-500/10", text: "text-blue-500" },
-  purple: { bg: "bg-purple-500/10", text: "text-purple-500" },
-  amber: { bg: "bg-amber-500/10", text: "text-amber-500" },
-  teal: { bg: "bg-teal-500/10", text: "text-teal-500" },
-  primary: { bg: "bg-primary/10", text: "text-primary" },
-}
+const iconStyle = "bg-primary/10 text-primary"
 
 function FeatureCard({
   icon: Icon,
   title,
   description,
-  color,
   index,
 }: {
   icon: React.ComponentType<{ className?: string }>
   title: string
   description: string
-  color: string
   index: number
 }) {
-  const c = colorMap[color] || colorMap.primary
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -114,7 +104,7 @@ function FeatureCard({
       transition={{ duration: 0.5, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
     >
       <Card variant="glass" hover="glow" padding="lg" className="h-full">
-        <div className={`flex size-12 items-center justify-center rounded-xl ${c.bg} ${c.text}`}>
+        <div className={`flex size-12 items-center justify-center rounded-xl ${iconStyle}`}>
           <Icon className="size-6" />
         </div>
         <h3 className="mt-5 text-h6 text-foreground">{title}</h3>
@@ -128,18 +118,15 @@ function StepCard({
   icon: Icon,
   title,
   description,
-  color,
   step,
   index,
 }: {
   icon: React.ComponentType<{ className?: string }>
   title: string
   description: string
-  color: string
   step: number
   index: number
 }) {
-  const c = colorMap[color] || colorMap.primary
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -149,11 +136,11 @@ function StepCard({
       className="relative"
     >
       <div className="flex flex-col items-center text-center">
-        <div className={`relative mb-6 flex size-16 items-center justify-center rounded-full ${c.bg}`}>
+        <div className="relative mb-6 flex size-16 items-center justify-center rounded-full bg-primary/10">
           <span className="absolute -left-1 -top-1 flex size-6 items-center justify-center rounded-full bg-foreground text-small font-bold text-background">
             {step}
           </span>
-          <Icon className={`size-7 ${c.text}`} />
+          <Icon className="size-7 text-primary" />
         </div>
         <h3 className="text-h6 text-foreground">{title}</h3>
         <p className="mt-2 text-body-sm text-muted-foreground">{description}</p>
@@ -173,8 +160,8 @@ export function WhyCarNext() {
           className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0B0B] via-[#0B0B0B]/70 to-[#0B0B0B]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0B0B0B]/50 via-transparent to-[#0B0B0B]/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-[#0A0A0A]/70 to-[#0A0A0A]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/50 via-transparent to-[#0A0A0A]/50" />
       </div>
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-1/2 top-0 size-[600px] -translate-x-1/2 rounded-full bg-primary/5 blur-[150px]" />

@@ -45,12 +45,12 @@ export function FeaturedCars() {
           </p>
 
           <div className="mt-6 flex justify-center gap-3">
-            {[
-              { tag: "Svi", active: "border-primary/50 text-primary bg-primary/10" },
-              { tag: "Novi", active: "border-emerald-500/50 text-emerald-400 bg-emerald-500/10" },
-              { tag: "Polovni", active: "border-blue-500/50 text-blue-400 bg-blue-500/10" },
-              { tag: "Električni", active: "border-purple-500/50 text-purple-400 bg-purple-500/10" },
-            ].map(({ tag, active }) => (
+              {[
+                { tag: "Svi", active: "border-primary/50 text-primary bg-primary/10" },
+                { tag: "Novi", active: "border-foreground/30 text-foreground/80 bg-foreground/10" },
+                { tag: "Polovni", active: "border-muted-foreground/30 text-muted-foreground bg-muted-foreground/10" },
+                { tag: "Električni", active: "border-primary/30 text-primary/70 bg-primary/8" },
+              ].map(({ tag, active }) => (
               <button
                 key={tag}
                 onClick={() => setActiveTag(tag)}

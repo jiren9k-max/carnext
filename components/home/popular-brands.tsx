@@ -7,29 +7,29 @@ import { Container } from "@/components/layout/container"
 import { brands } from "@/data/brands"
 
 const brandColors = [
-  "from-emerald-500/20 to-emerald-500/5",
-  "from-blue-500/20 to-blue-500/5",
-  "from-purple-500/20 to-purple-500/5",
-  "from-amber-500/20 to-amber-500/5",
-  "from-rose-500/20 to-rose-500/5",
-  "from-teal-500/20 to-teal-500/5",
   "from-primary/20 to-primary/5",
-  "from-cyan-500/20 to-cyan-500/5",
-  "from-pink-500/20 to-pink-500/5",
-  "from-lime-500/20 to-lime-500/5",
+  "from-primary/15 to-primary/3",
+  "from-primary/18 to-primary/4",
+  "from-primary/12 to-primary/3",
+  "from-primary/20 to-primary/5",
+  "from-primary/15 to-primary/3",
+  "from-primary/20 to-primary/5",
+  "from-primary/12 to-primary/3",
+  "from-primary/18 to-primary/4",
+  "from-primary/15 to-primary/3",
 ]
 
 const brandLogos = [
-  "hover:text-emerald-400",
-  "hover:text-blue-400",
-  "hover:text-purple-400",
-  "hover:text-amber-400",
-  "hover:text-rose-400",
-  "hover:text-teal-400",
   "hover:text-primary",
-  "hover:text-cyan-400",
-  "hover:text-pink-400",
-  "hover:text-lime-400",
+  "hover:text-primary/80",
+  "hover:text-primary",
+  "hover:text-primary/70",
+  "hover:text-primary",
+  "hover:text-primary/80",
+  "hover:text-primary",
+  "hover:text-primary/70",
+  "hover:text-primary",
+  "hover:text-primary/80",
 ]
 
 function BrandCard({ brand, index }: { brand: (typeof brands)[number]; index: number }) {
@@ -69,7 +69,7 @@ export function PopularBrands() {
 
   return (
     <section className="relative overflow-hidden pb-24 pt-8">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0B0B0B] via-[#0B0B0B]/85 to-[#0B0B0B]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-[#0A0A0A]/85 to-[#0A0A0A]" />
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-40 top-1/2 size-[500px] -translate-y-1/2 rounded-full bg-white/10 blur-[150px]" />
         <div className="absolute -right-40 top-1/2 size-[500px] -translate-y-1/2 rounded-full bg-white/5 blur-[150px]" />
@@ -147,8 +147,8 @@ export function PopularBrands() {
             })}
           </motion.div>
 
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-[#0B0B0B] to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-[#0B0B0B] to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-[#0A0A0A] to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-[#0A0A0A] to-transparent" />
         </div>
       </Container>
     </section>

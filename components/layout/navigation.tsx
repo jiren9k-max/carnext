@@ -63,7 +63,7 @@ export function MobileNav() {
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className={cn(
               "fixed inset-0 z-40 flex flex-col items-center justify-center gap-8",
-              "bg-[#0B0B0B]/95 backdrop-blur-2xl"
+              "bg-[#0A0A0A]/95 backdrop-blur-2xl"
             )}
           >
             {links.map((link, i) => (

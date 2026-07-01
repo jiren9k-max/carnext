@@ -20,25 +20,6 @@ const badgeConfig: Record<
   prodano: { label: "Prodano", variant: "secondary" },
 }
 
-const makeGradients: Record<string, string> = {
-  Volkswagen: "from-[#004e92] to-[#002855]",
-  Škoda: "from-[#4ba83d] to-[#2d6b24]",
-  Renault: "from-[#ffc423] to-[#cc9c00]",
-  Toyota: "from-[#e72123] to-[#a31618]",
-  Hyundai: "from-[#00a2ed] to-[#006ba8]",
-  Peugeot: "from-[#6f2086] to-[#4a1559]",
-  BMW: "from-[#0696d6] to-[#04567d]",
-  Kia: "from-[#bb162b] to-[#810f1d]",
-  "Mercedes-Benz": "from-[#00a19b] to-[#006d68]",
-  "Land Rover": "from-[#006f4c] to-[#003d29]",
-  Citroen: "from-[#a3a3a3] to-[#6b6b6b]",
-  Nissan: "from-[#c3002f] to-[#850020]",
-  Smart: "from-[#e30613] to-[#9e0b14]",
-  Audi: "from-[#d4af37] to-[#8a701f]",
-}
-
-const defaultGradient = "from-[#2A2A2A] to-[#171717]"
-
 function formatMileage(km: number) {
   return `${(km / 1000).toFixed(km >= 10000 ? 0 : 1)}k km`
 }
@@ -54,8 +35,6 @@ interface CarCardProps {
 }
 
 export function CarCard({ car, index = 0 }: CarCardProps) {
-  const gradient = makeGradients[car.make] || defaultGradient
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -71,9 +50,7 @@ export function CarCard({ car, index = 0 }: CarCardProps) {
       >
         <Link href={`/cars/${car.id}`} className="block">
           <div className="relative aspect-[16/10] overflow-hidden bg-muted">
-            <div
-              className={`absolute inset-0 bg-gradient-to-br ${gradient} transition-transform duration-700 group-hover:scale-110`}
-            />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#1E1E1E] to-[#0A0A0A]" />
 
             <Image
               src={car.images[0]}
@@ -115,6 +92,8 @@ export function CarCard({ car, index = 0 }: CarCardProps) {
               </p>
             </div>
           </div>
+
+          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary/0 transition-colors duration-500 group-hover:bg-primary/60" />
         </Link>
 
         <div className="p-4 md:p-5">
@@ -124,7 +103,7 @@ export function CarCard({ car, index = 0 }: CarCardProps) {
             </h3>
           </Link>
 
-          <div className="mt-3 grid grid-cols-2 gap-2">
+          <div className="mt-3 grid grid-cols-2 gap-y-2">
             <Detail icon={Calendar} label={String(car.year)} />
             <Detail icon={Gauge} label={formatMileage(car.mileage)} />
             <Detail icon={Fuel} label={car.fuelType} />
@@ -138,22 +117,7 @@ export function CarCard({ car, index = 0 }: CarCardProps) {
                 {formatPrice(car.price)}
               </p>
             </div>
-            <span className="rounded-full border border-primary/20 bg-primary/5 px-2.5 py-1 text-small text-primary">
-              {car.mileage < 10000 ? "Skoro novo" : "Provjereno"}
-            </span>
           </div>
-
-          <Button
-            asChild
-            variant="outline"
-            size="sm"
-            className="mt-4 w-full gap-2 border-border/50 text-muted-foreground transition-all hover:border-primary/50 hover:text-primary"
-          >
-            <Link href={`/cars/${car.id}`}>
-              Pogledaj detalje
-              <Eye className="size-3.5" />
-            </Link>
-          </Button>
         </div>
       </Card>
     </motion.div>

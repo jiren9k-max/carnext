@@ -40,7 +40,7 @@ export function Header() {
           <div className="flex h-16 md:h-20 items-center justify-between">
             <Link href="/" className="group flex items-center gap-2">
               <div className="relative transition-all duration-500 group-hover:scale-110">
-                <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0 opacity-0 blur-xl transition-all duration-500 group-hover:from-orange-500/40 group-hover:via-amber-500/30 group-hover:to-yellow-500/20 group-hover:opacity-100" />
+                <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0 opacity-0 blur-xl transition-all duration-500 group-hover:from-primary/40 group-hover:via-primary/30 group-hover:to-primary/20 group-hover:opacity-100" />
                 <Image
                   src="/logo.png"
                   alt="CarNext"

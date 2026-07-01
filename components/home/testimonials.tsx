@@ -25,12 +25,12 @@ function Stars({ rating }: { rating: number }) {
 }
 
 const avatarColors = [
-  "bg-emerald-500/20 text-emerald-500",
-  "bg-blue-500/20 text-blue-500",
-  "bg-purple-500/20 text-purple-500",
-  "bg-amber-500/20 text-amber-500",
-  "bg-rose-500/20 text-rose-500",
-  "bg-teal-500/20 text-teal-500",
+  "bg-primary/10 text-primary",
+  "bg-primary/8 text-primary/80",
+  "bg-primary/12 text-primary",
+  "bg-primary/6 text-primary/70",
+  "bg-primary/10 text-primary",
+  "bg-primary/8 text-primary/80",
 ]
 
 function AvatarFallback({ name, index }: { name: string; index: number }) {

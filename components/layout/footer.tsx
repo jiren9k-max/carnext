@@ -37,7 +37,7 @@ export function Footer() {
   }
 
   return (
-    <footer className="relative overflow-hidden border-t border-white/10 bg-[#0B0B0B]">
+    <footer className="relative overflow-hidden border-t border-white/10 bg-[#0A0A0A]">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-1/2 size-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/15 blur-[200px]" />
         <div className="absolute left-1/2 top-1/2 size-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[150px]" />
@@ -48,7 +48,7 @@ export function Footer() {
           <div className="lg:col-span-4">
             <Link href="/" className="group inline-flex items-center gap-2">
               <div className="relative transition-all duration-500 group-hover:scale-110">
-                <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0 opacity-0 blur-xl transition-all duration-500 group-hover:from-orange-500/40 group-hover:via-amber-500/30 group-hover:to-yellow-500/20 group-hover:opacity-100" />
+                <div className="absolute -inset-2 rounded-full bg-gradient-to-br from-primary/0 via-primary/0 to-primary/0 opacity-0 blur-xl transition-all duration-500 group-hover:from-primary/40 group-hover:via-primary/30 group-hover:to-primary/20 group-hover:opacity-100" />
                 <Image
                   src="/logo.png"
                   alt="CarNext"
