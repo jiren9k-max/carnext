@@ -42,7 +42,7 @@ export const locations = [
   "Sarajevo",
 ]
 
-export const yearRange = { min: 2010, max: 2025 }
+export const yearRange = { min: 1990, max: 2026 }
 
 export const priceRange = { min: 0, max: 80000 }
 

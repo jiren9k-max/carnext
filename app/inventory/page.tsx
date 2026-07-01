@@ -27,7 +27,6 @@ function InventoryContent() {
     let result = [...demoCars]
 
     const makeParam = searchParams.get("make")
-    const modelParam = searchParams.get("model")
     const fuelParam = searchParams.get("fuel")
     const transmissionParam = searchParams.get("transmission")
     const bodyTypeParam = searchParams.get("bodyType")
@@ -41,9 +40,6 @@ function InventoryContent() {
     if (makeParam) {
       const normalize = (s: string) => s.toLowerCase().replace(/[šđčćž]/g, (c) => ({ š: "s", đ: "dj", č: "c", ć: "c", ž: "z" })[c] || c)
       result = result.filter((c) => normalize(c.make) === normalize(makeParam))
-    }
-    if (modelParam) {
-      result = result.filter((c) => c.model.toLowerCase().includes(modelParam.toLowerCase()))
     }
     if (activeFuel !== "Svi") {
       result = result.filter((c) => c.fuelType === activeFuel)

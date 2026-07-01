@@ -18,9 +18,7 @@ import {
   makes,
   fuelTypes,
   transmissions,
-  drivetrains,
   bodyTypes,
-  locations,
   yearRange,
   priceRange,
   mileageRange,
@@ -33,9 +31,7 @@ interface Filters {
   mileage: number[]
   fuel: string
   transmission: string
-  drivetrain: string
   bodyType: string
-  location: string
 }
 
 const initialFilters: Filters = {
@@ -45,9 +41,7 @@ const initialFilters: Filters = {
   mileage: [mileageRange.min, mileageRange.max],
   fuel: "",
   transmission: "",
-  drivetrain: "",
   bodyType: "",
-  location: "",
 }
 
 const formatPrice = (v: number) =>
@@ -74,7 +68,6 @@ export function SearchSection() {
     if (filters.fuel) params.set("fuel", filters.fuel)
     if (filters.transmission) params.set("transmission", filters.transmission)
     if (filters.bodyType) params.set("bodyType", filters.bodyType)
-    if (filters.location) params.set("location", filters.location)
     if (filters.year[0] !== yearRange.min || filters.year[1] !== yearRange.max) {
       params.set("minYear", String(filters.year[0]))
       params.set("maxYear", String(filters.year[1]))
@@ -184,25 +177,6 @@ export function SearchSection() {
               </Select>
             </FilterField>
 
-            <FilterField label="Pogon">
-              <Select
-                value={filters.drivetrain}
-                onValueChange={(v) => updateFilter("drivetrain", v)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Svi tipovi" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">Svi tipovi</SelectItem>
-                  {drivetrains.map((d) => (
-                    <SelectItem key={d} value={d}>
-                      {d}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </FilterField>
-
             <FilterField label="Karoserija">
               <Select
                 value={filters.bodyType}
@@ -216,25 +190,6 @@ export function SearchSection() {
                   {bodyTypes.map((b) => (
                     <SelectItem key={b} value={b}>
                       {b}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </FilterField>
-
-            <FilterField label="Lokacija" className="md:col-span-2 lg:col-span-1">
-              <Select
-                value={filters.location}
-                onValueChange={(v) => updateFilter("location", v)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Sve lokacije" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">Sve lokacije</SelectItem>
-                  {locations.map((l) => (
-                    <SelectItem key={l} value={l}>
-                      {l}
                     </SelectItem>
                   ))}
                 </SelectContent>
