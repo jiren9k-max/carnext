@@ -44,12 +44,12 @@ export function CarCard({ car, index = 0 }: CarCardProps) {
     >
       <Card
         variant="glass"
-        hover="lift"
+        hover="glow"
         padding="off"
         className="group overflow-hidden"
       >
         <Link href={`/cars/${car.id}`} className="block">
-          <div className="relative aspect-[16/10] overflow-hidden bg-muted">
+          <div className="relative aspect-[16/10] overflow-hidden shimmer">
             <div className="absolute inset-0 bg-gradient-to-br from-[#1E1E1E] to-[#0A0A0A]" />
 
             <Image

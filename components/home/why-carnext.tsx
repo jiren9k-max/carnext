@@ -151,7 +151,7 @@ function StepCard({
 
 export function WhyCarNext() {
   return (
-    <section className="relative overflow-hidden pb-24 pt-16 md:pb-32 md:pt-24">
+    <section className="relative overflow-hidden pb-24 pt-16 md:pb-32 md:pt-24 before:absolute before:inset-x-[10%] before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-primary/40 before:to-transparent">
       <div className="absolute inset-0">
         <Image
           src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1920&q=80"

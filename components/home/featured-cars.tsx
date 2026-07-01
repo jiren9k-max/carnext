@@ -19,7 +19,7 @@ export function FeaturedCars() {
     : available.slice(0, 6)
 
   return (
-    <section className="relative overflow-hidden pb-24 pt-16 md:pb-32 md:pt-24">
+    <section className="relative overflow-hidden pb-24 pt-16 md:pb-32 md:pt-24 before:absolute before:inset-x-[10%] before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-primary/40 before:to-transparent">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-40 -top-40 size-80 rounded-full bg-white/10 blur-[120px]" />
         <div className="absolute -right-40 bottom-0 size-80 rounded-full bg-white/5 blur-[120px]" />

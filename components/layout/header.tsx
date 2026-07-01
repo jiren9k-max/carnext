@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { motion, useScroll, useSpring } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { Container } from "./container"
 import { Navigation, MobileNav } from "./navigation"
@@ -11,6 +11,12 @@ import { Button } from "../ui/button"
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
+  const { scrollYProgress } = useScroll()
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  })
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
@@ -22,11 +28,15 @@ export function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <motion.div
+        style={{ scaleX }}
+        className="absolute inset-x-0 top-0 z-50 h-0.5 origin-left bg-gradient-to-r from-primary via-accent to-primary"
+      />
+      <motion.div
         initial={false}
         animate={{
           backgroundColor: scrolled
-            ? "rgba(11, 11, 11, 0.85)"
-            : "rgba(11, 11, 11, 0)",
+            ? "rgba(10, 10, 10, 0.85)"
+            : "rgba(10, 10, 10, 0)",
         }}
         transition={{ duration: 0.4, ease: "easeOut" }}
         className={cn(
