@@ -7,6 +7,7 @@ import { Star, Quote, ArrowLeft, ArrowRight } from "lucide-react"
 import { Container } from "@/components/layout/container"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { FloatingSquares } from "@/components/effects/floating-squares"
 import { reviews } from "@/data/reviews"
 
 const AUTOPLAY_INTERVAL = 4000
@@ -72,6 +73,8 @@ export function Testimonials() {
 
   return (
     <section className="relative overflow-hidden pb-24 pt-16 md:pb-32 md:pt-24 before:absolute before:inset-x-[10%] before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-primary/40 before:to-transparent">
+      <FloatingSquares />
+      <div className="absolute inset-0 bg-[#0D0B08]" />
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-40 top-1/3 size-[500px] -translate-y-1/2 rounded-full bg-white/10 blur-[150px]" />
         <div className="absolute -right-40 top-2/3 size-[500px] -translate-y-1/2 rounded-full bg-white/5 blur-[150px]" />
