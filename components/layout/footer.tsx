@@ -37,7 +37,7 @@ export function Footer() {
   }
 
   return (
-    <footer className="relative overflow-hidden border-t border-white/10 bg-[#0A0A0A]">
+    <footer className="relative overflow-hidden border-t border-white/10 bg-[#0F0D0A]">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-1/2 size-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/15 blur-[200px]" />
         <div className="absolute left-1/2 top-1/2 size-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[150px]" />

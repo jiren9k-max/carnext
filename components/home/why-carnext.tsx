@@ -154,7 +154,7 @@ export function WhyCarNext() {
   return (
     <section className="relative overflow-hidden pb-24 pt-16 md:pb-32 md:pt-24 before:absolute before:inset-x-[10%] before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-primary/40 before:to-transparent">
       <FloatingSquares count={30} />
-      <div className="absolute inset-0 bg-[#0D0B08]" />
+      <div className="absolute inset-0 bg-[#0F0D0A]" />
       <div className="absolute inset-0">
         <Image
           src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1920&q=80"
@@ -163,8 +163,8 @@ export function WhyCarNext() {
           className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-[#0A0A0A]/70 to-[#0A0A0A]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/50 via-transparent to-[#0A0A0A]/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0F0D0A] via-[#0F0D0A]/70 to-[#0F0D0A]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0F0D0A]/50 via-transparent to-[#0F0D0A]/50" />
       </div>
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-1/2 top-0 size-[600px] -translate-x-1/2 rounded-full bg-primary/5 blur-[150px]" />
