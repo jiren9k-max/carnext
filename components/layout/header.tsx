@@ -57,11 +57,11 @@ export function Header() {
             <Navigation />
 
             <div className="flex items-center gap-4">
-              <Button variant="glass" size="sm" className="hidden md:inline-flex transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20">
-                Prijava
+              <Button variant="glass" size="sm" className="hidden md:inline-flex transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20" asChild>
+                <Link href="/prijava">Prijava</Link>
               </Button>
-              <Button size="sm" className="hidden md:inline-flex transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20">
-                Registracija
+              <Button size="sm" className="hidden md:inline-flex transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20" asChild>
+                <Link href="/registracija">Registracija</Link>
               </Button>
               <MobileNav />
             </div>
