@@ -41,9 +41,9 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        <StatCard label="Ukupno vozila" value={String(vehicles.length)} icon={Car} change="+2 this month" positive />
-        <StatCard label="Korisnici" value="5" icon={Users} change="+1 this month" positive />
-        <StatCard label="Upiti" value={String(inquiries.length)} icon={MessageSquare} change={`${newInquiries} new`} positive />
+        <StatCard label="Ukupno vozila" value={String(vehicles.length)} icon={Car} change="+2 this month" positive href="/admin/vehicles" />
+        <StatCard label="Korisnici" value="5" icon={Users} change="+1 this month" positive href="/admin/users" />
+        <StatCard label="Upiti" value={String(inquiries.length)} icon={MessageSquare} change={`${newInquiries} new`} positive href="/admin/inquiries" />
         <StatCard label="Pregledi" value="4,892" icon={Eye} change="+12.5%" positive />
         <StatCard label="Prihod" value={`${(totalRevenue / 1000000).toFixed(1)}M KM`} icon={DollarSign} change="+8.3%" positive />
         <StatCard label="Konverzija" value="3.2%" icon={TrendingUp} change="+0.4%" positive />
@@ -53,8 +53,12 @@ export default function AdminDashboard() {
         <div className="rounded-[var(--radius)] border border-border bg-card p-5">
           <h3 className="text-h6 text-foreground">Nedavni upiti</h3>
           <div className="mt-4 space-y-3">
-            {inquiries.slice(0, 3).map((inq) => (
-              <div key={inq.id} className="flex items-start gap-3 rounded-lg border border-border/50 p-3">
+              {inquiries.slice(0, 3).map((inq) => (
+              <Link
+                key={inq.id}
+                href="/admin/inquiries"
+                className="flex items-start gap-3 rounded-lg border border-border/50 p-3 transition-colors hover:border-primary/20"
+              >
                 <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-small font-medium text-primary">
                   {inq.name[0]}
                 </div>
@@ -65,7 +69,7 @@ export default function AdminDashboard() {
                 <span className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-caption text-primary">
                   {inq.status}
                 </span>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

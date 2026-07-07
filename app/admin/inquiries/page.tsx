@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { inquiries, type Inquiry } from "@/data/admin"
-import { Mail, Check, Reply } from "lucide-react"
+import { Mail, Check, Reply, Loader2 } from "lucide-react"
+import type { Inquiry } from "@/data/admin"
 
 const statusConfig: Record<Inquiry["status"], { label: string; variant: "warning" | "secondary" | "success" }> = {
   new: { label: "Novo", variant: "warning" },
@@ -13,9 +13,39 @@ const statusConfig: Record<Inquiry["status"], { label: string; variant: "warning
 }
 
 export default function InquiriesPage() {
+  const [inquiries, setInquiries] = useState<Inquiry[]>([])
   const [selected, setSelected] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch("/api/inquiries")
+      .then((r) => r.json())
+      .then((data) => {
+        setInquiries(data)
+        setLoading(false)
+      })
+  }, [])
+
+  async function markRead(id: string) {
+    const res = await fetch(`/api/inquiries/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: "read" }),
+    })
+    if (res.ok) {
+      setInquiries((prev) => prev.map((i) => (i.id === id ? { ...i, status: "read" as const } : i)))
+    }
+  }
 
   const inq = selected ? inquiries.find((i) => i.id === selected) : null
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="size-8 animate-spin text-primary" />
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -29,7 +59,7 @@ export default function InquiriesPage() {
           {inquiries.map((inq) => (
             <button
               key={inq.id}
-              onClick={() => setSelected(inq.id)}
+              onClick={() => { setSelected(inq.id); if (inq.status === "new") markRead(inq.id) }}
               className={`w-full text-left rounded-lg border p-4 transition-colors ${
                 selected === inq.id ? "border-primary/50 bg-primary/5" : "border-border bg-card hover:border-primary/20"
               }`}
@@ -72,7 +102,14 @@ export default function InquiriesPage() {
 
               <div className="mt-6 flex gap-3">
                 <Button size="sm" className="gap-2"><Reply className="size-3.5" /> Odgovori</Button>
-                <Button size="sm" variant="outline" className="gap-2"><Check className="size-3.5" /> Označi kao riješeno</Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="gap-2"
+                  onClick={() => markRead(inq.id)}
+                >
+                  <Check className="size-3.5" /> Označi kao pročitano
+                </Button>
               </div>
             </div>
           ) : (

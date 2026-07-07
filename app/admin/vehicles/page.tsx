@@ -23,6 +23,12 @@ export default function VehiclesPage() {
     fetch("/api/vehicles").then((r) => r.json()).then(setVehicles)
   }, [])
 
+  async function removeVehicle(id: string) {
+    if (!confirm("Jeste li sigurni da želite obrisati ovo vozilo?")) return
+    const res = await fetch(`/api/vehicles/${id}`, { method: "DELETE" })
+    if (res.ok) setVehicles((prev) => prev.filter((v) => v.id !== id))
+  }
+
   const filtered = vehicles.filter((v) =>
     `${v.make} ${v.model} ${v.year}`.toLowerCase().includes(search.toLowerCase())
   )
@@ -90,7 +96,7 @@ export default function VehiclesPage() {
                           <Pencil className="size-3.5" />
                         </Link>
                       </Button>
-                      <Button variant="ghost" size="icon-xs" className="text-destructive hover:text-destructive">
+                      <Button variant="ghost" size="icon-xs" className="text-destructive hover:text-destructive" onClick={() => removeVehicle(v.id)}>
                         <Trash2 className="size-3.5" />
                       </Button>
                     </div>

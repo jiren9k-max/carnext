@@ -11,52 +11,72 @@ const fillClass = "fill-current transition-colors duration-500"
 
 function BMWLogo({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 120 120" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="60" cy="60" r="54" className={strokeClass} strokeWidth="5" />
-      <circle cx="60" cy="60" r="42" className={strokeClass} strokeWidth="3" />
-      <path d="M60 18 A42 42 0 0 1 60 102" className={fillClass} />
-      <path d="M60 18 A42 42 0 0 0 60 102" className={fillClass} opacity="0.3" />
-      <text x="60" y="66" textAnchor="middle" className={fillClass} fontSize="11" fontWeight="700" fontFamily="Geist,sans-serif">BMW</text>
+    <svg viewBox="0 0 120 120" className={className} xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="60" r="56" fill="currentColor" opacity="0.08" />
+      <circle cx="60" cy="60" r="52" className={strokeClass} strokeWidth="3" />
+      <circle cx="60" cy="60" r="38" className={strokeClass} strokeWidth="2" />
+      <path d="M60 22 A38 38 0 0 1 98 60 L60 60 Z" fill="#0066b4" />
+      <path d="M60 22 A38 38 0 0 0 22 60 L60 60 Z" fill="#a0a0a0" opacity="0.3" />
+      <path d="M22 60 A38 38 0 0 0 60 98 L60 60 Z" fill="#a0a0a0" opacity="0.15" />
+      <path d="M98 60 A38 38 0 0 1 60 98 L60 60 Z" fill="#0066b4" />
+      <rect x="44" y="55" width="32" height="3" rx="1" fill="currentColor" opacity="0.5" />
+      <text x="60" y="70" textAnchor="middle" fill="currentColor" fontSize="10" fontWeight="700" fontFamily="Arial,sans-serif">BMW</text>
     </svg>
   )
 }
 
 function MercedesLogo({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 120 120" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="60" cy="60" r="54" className={strokeClass} strokeWidth="5" />
-      <path d="M60 14 L60 60 M60 60 L96 96 M60 60 L24 96" className={strokeClass} strokeWidth="4" strokeLinecap="round" />
-      <circle cx="60" cy="60" r="8" className={fillClass} />
+    <svg viewBox="0 0 120 120" className={className} xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="60" r="56" fill="currentColor" opacity="0.08" />
+      <circle cx="60" cy="60" r="52" className={strokeClass} strokeWidth="3" />
+      <path d="M60 16 L60 60 M60 60 L104 104 M60 60 L16 104" className={strokeClass} strokeWidth="3.5" strokeLinecap="round" />
+      <circle cx="60" cy="60" r="5" className={fillClass} />
+      <text x="60" y="117" textAnchor="middle" fill="currentColor" fontSize="7" fontWeight="600" fontFamily="Arial,sans-serif" letterSpacing="1">MERCEDES</text>
     </svg>
   )
 }
 
 function AudiLogo({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 120 60" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-      {[0, 1, 2, 3].map((i) => (
-        <circle key={i} cx={18 + i * 28} cy="30" r="13.5" className={strokeClass} strokeWidth="3.5" />
-      ))}
-      <text x="60" y="54" textAnchor="middle" className={fillClass} fontSize="9" fontWeight="600" fontFamily="Geist,sans-serif">AUDI</text>
+    <svg viewBox="0 0 120 64" className={className} xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="2" width="108" height="54" rx="4" fill="currentColor" opacity="0.06" />
+      {[0, 1, 2, 3].map((i) => {
+        const cx = 18 + i * 28
+        return (
+          <g key={i}>
+            <circle cx={cx} cy="30" r="15" className={strokeClass} strokeWidth="3.5" />
+            <circle cx={cx} cy="30" r="10" fill="currentColor" opacity="0.06" />
+          </g>
+        )
+      })}
+      <text x="60" y="58" textAnchor="middle" fill="currentColor" fontSize="9" fontWeight="700" fontFamily="Arial,sans-serif" letterSpacing="2.5">AUDI</text>
     </svg>
   )
 }
 
 function VWLogo({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 120 120" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="60" cy="60" r="54" className={strokeClass} strokeWidth="5" />
-      <path d="M60 14 L38 104 M60 14 L82 104 M44 74 L76 74" className={strokeClass} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+    <svg viewBox="0 0 120 120" className={className} xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="60" r="56" fill="currentColor" opacity="0.08" />
+      <circle cx="60" cy="60" r="52" className={strokeClass} strokeWidth="3" />
+      <circle cx="60" cy="60" r="36" className={strokeClass} strokeWidth="1.5" />
+      <path d="M60 28 L36 100 M60 28 L84 100 M46 78 L74 78" className={strokeClass} strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
 
 function SkodaLogo({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 120 120" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="60" cy="60" r="54" className={strokeClass} strokeWidth="5" />
-      <path d="M32 32 L60 60 L88 32 M32 32 L32 88 L60 60 M88 32 L88 88 L60 60" className={strokeClass} strokeWidth="3.5" strokeLinejoin="round" />
-      <circle cx="60" cy="60" r="4" className={fillClass} />
+    <svg viewBox="0 0 120 120" className={className} xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="60" r="56" fill="currentColor" opacity="0.08" />
+      <circle cx="60" cy="60" r="52" className={strokeClass} strokeWidth="3" />
+      <path d="M52 32 Q60 48 52 72 Q44 88 36 96 Q28 88 32 72 Q28 48 36 32 Z" className={fillClass} opacity="0.15" />
+      <path d="M68 32 Q60 48 68 72 Q76 88 84 96 Q92 88 88 72 Q92 48 84 32 Z" className={fillClass} opacity="0.15" />
+      <circle cx="60" cy="48" r="16" className={strokeClass} strokeWidth="2.5" />
+      <circle cx="52" cy="72" r="10" className={strokeClass} strokeWidth="2" />
+      <circle cx="68" cy="72" r="10" className={strokeClass} strokeWidth="2" />
+      <path d="M44 84 Q52 94 60 98 Q68 94 76 84" fill="none" className={strokeClass} strokeWidth="2" strokeLinecap="round" />
     </svg>
   )
 }
