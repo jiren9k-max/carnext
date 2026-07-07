@@ -20,16 +20,16 @@ const brandColors = [
 ]
 
 const brandLogos = [
-  "hover:text-primary",
-  "hover:text-primary/80",
-  "hover:text-primary",
-  "hover:text-primary/70",
-  "hover:text-primary",
-  "hover:text-primary/80",
-  "hover:text-primary",
-  "hover:text-primary/70",
-  "hover:text-primary",
-  "hover:text-primary/80",
+  "opacity-70 group-hover:opacity-100",
+  "opacity-70 group-hover:opacity-100",
+  "opacity-70 group-hover:opacity-100",
+  "opacity-70 group-hover:opacity-100",
+  "opacity-70 group-hover:opacity-100",
+  "opacity-70 group-hover:opacity-100",
+  "opacity-70 group-hover:opacity-100",
+  "opacity-70 group-hover:opacity-100",
+  "opacity-70 group-hover:opacity-100",
+  "opacity-70 group-hover:opacity-100",
 ]
 
 function BrandCard({ brand, index }: { brand: (typeof brands)[number]; index: number }) {
@@ -52,7 +52,7 @@ function BrandCard({ brand, index }: { brand: (typeof brands)[number]; index: nu
         />
         <div className="relative flex items-center justify-center transition-all duration-500 grayscale group-hover:grayscale-0">
           <brand.Logo
-            className={`h-14 w-14 text-white/40 transition-all duration-500 group-hover:scale-110 sm:h-16 sm:w-16 ${logoColor}`}
+            className={`h-14 w-14 transition-all duration-500 group-hover:scale-110 sm:h-16 sm:w-16 ${logoColor}`}
           />
         </div>
         <span className="relative text-body-sm font-medium text-white/60 transition-colors duration-500 group-hover:text-white">
@@ -135,7 +135,7 @@ export function PopularBrands() {
                     />
                     <div className="relative flex items-center justify-center transition-all duration-500 grayscale hover:grayscale-0">
                       <brand.Logo
-                        className={`h-12 w-12 text-white/40 transition-all duration-500 hover:scale-110 ${logoColor}`}
+                        className={`h-12 w-12 transition-all duration-500 hover:scale-110 ${logoColor}`}
                       />
                     </div>
                     <span className="relative text-small font-medium text-white/60 transition-colors duration-500 hover:text-white">
