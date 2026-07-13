@@ -128,7 +128,7 @@ export function PopularBrands() {
                 >
                   <Link
                     href={`/inventory?make=${brand.slug}`}
-                    className={`group relative flex w-[140px] flex-col items-center gap-3 overflow-hidden rounded-[var(--radius)] border border-white/20 bg-gradient-to-br from-white/[0.08] to-white/[0.02] p-5 backdrop-blur-sm transition-all duration-500 hover:-translate-y-0.5 hover:border-white/40 hover:shadow-lg`}
+                    className={`group relative flex w-[130px] flex-col items-center gap-3 overflow-hidden rounded-[var(--radius)] border border-white/20 bg-gradient-to-br from-white/[0.08] to-white/[0.02] p-4 backdrop-blur-sm transition-all duration-500 hover:-translate-y-0.5 hover:border-white/40 hover:shadow-lg`}
                   >
                     <div
                       className={`pointer-events-none absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${gradient}`}
@@ -147,8 +147,14 @@ export function PopularBrands() {
             })}
           </motion.div>
 
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-[#0A0A0A] to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-[#0A0A0A] to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-4 bg-gradient-to-r from-[#0A0A0A] to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-4 bg-gradient-to-l from-[#0A0A0A] to-transparent" />
+        </div>
+
+        <div className="mt-4 flex justify-center gap-2 sm:hidden">
+          {brands.map((_, i) => (
+            <span key={i} className="size-1.5 rounded-full bg-white/20" />
+          ))}
         </div>
       </Container>
     </section>
