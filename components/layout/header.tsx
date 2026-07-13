@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, useScroll, useSpring } from "framer-motion"
@@ -73,7 +73,9 @@ export function Header() {
               <Button size="sm" className="hidden md:inline-flex transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20" asChild>
                 <Link href="/registracija">Registracija</Link>
               </Button>
-              <MobileNav />
+              <Suspense fallback={null}>
+                <MobileNav />
+              </Suspense>
             </div>
           </div>
         </Container>

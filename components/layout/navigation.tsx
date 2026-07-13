@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
 
@@ -31,17 +30,9 @@ export function Navigation() {
 
 export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false)
-  const pathname = usePathname()
-  const router = useRouter()
-  const isHome = pathname === "/"
 
   const handleToggle = () => {
-    if (isHome) {
-      setIsOpen(!isOpen)
-    } else {
-      router.push("/")
-      setIsOpen(true)
-    }
+    setIsOpen(!isOpen)
   }
 
   return (
@@ -53,15 +44,15 @@ export function MobileNav() {
       >
         <div className="flex flex-col gap-1.5">
           <motion.span
-            animate={isOpen && isHome ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+            animate={isOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
             className="block h-0.5 w-5 bg-foreground transition-colors"
           />
           <motion.span
-            animate={isOpen && isHome ? { opacity: 0 } : { opacity: 1 }}
+            animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
             className="block h-0.5 w-5 bg-foreground transition-colors"
           />
           <motion.span
-            animate={isOpen && isHome ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
+            animate={isOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
             className="block h-0.5 w-5 bg-foreground transition-colors"
           />
         </div>
