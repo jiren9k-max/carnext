@@ -13,7 +13,7 @@ function SelectTrigger({
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
       className={cn(
-        "flex h-9 w-full items-center justify-between rounded-lg border border-border bg-transparent px-3 py-2 text-sm text-foreground shadow-sm outline-none transition-colors",
+        "flex h-9 w-full items-center justify-between rounded-lg border border-border bg-transparent px-3 py-2 text-base text-foreground shadow-sm outline-none transition-colors",
         "placeholder:text-muted-foreground/60",
         "hover:border-ring/50",
         "focus-visible:border-ring/70 focus-visible:ring-3 focus-visible:ring-ring/20",

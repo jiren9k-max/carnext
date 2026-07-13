@@ -169,7 +169,7 @@ export default function CarDetailPage() {
               <span className="text-small text-muted-foreground">cijena uključuje PDV</span>
             </div>
 
-            <div className="mt-6 grid grid-cols-2 gap-3">
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
               {specs.map((s) => (
                 <div key={s.label} className="flex items-center gap-3 rounded-lg border border-border/50 bg-card/50 p-3">
                   <s.icon className="size-5 shrink-0 text-primary" />

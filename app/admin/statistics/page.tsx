@@ -38,7 +38,7 @@ export default function StatisticsPage() {
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <div className="rounded-[var(--radius)] border border-border bg-card p-5">
           <h3 className="text-h6 text-foreground mb-6">Mjesečni pregled</h3>
-          <div className="flex items-end justify-between gap-2" style={{ height: 160 }}>
+          <div className="flex items-end justify-between gap-2 overflow-x-auto pb-2" style={{ height: 160, minWidth: 300 }}>
             {monthlyData.map((d) => (
               <div key={d.month} className="flex flex-1 flex-col items-center gap-2">
                 <span className="text-caption text-muted-foreground">{d.inquiries}</span>

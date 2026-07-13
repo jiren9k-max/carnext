@@ -71,9 +71,9 @@ export default function SettingsPage() {
             {["Novi upit", "Nova registracija", "Kupovina vozila", "Newsletter prijava"].map((item) => (
               <label key={item} className="flex items-center justify-between rounded-lg border border-border/50 p-3 cursor-pointer hover:bg-muted/30">
                 <span className="text-body-sm text-foreground">{item}</span>
-                <div className="relative inline-flex h-5 w-9 cursor-pointer items-center rounded-full bg-primary transition-colors has-checked:bg-primary">
+                <div className="relative inline-flex h-7 w-12 cursor-pointer items-center rounded-full bg-primary/30 transition-colors has-checked:bg-primary">
                   <input type="checkbox" defaultChecked className="sr-only peer" />
-                  <span className="absolute left-0.5 size-4 rounded-full bg-white transition-transform peer-checked:translate-x-4" />
+                  <span className="absolute left-0.5 size-6 rounded-full bg-white shadow-sm transition-transform peer-checked:translate-x-5" />
                 </div>
               </label>
             ))}

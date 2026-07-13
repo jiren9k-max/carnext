@@ -48,7 +48,7 @@ export default function BlogPage() {
               <Badge variant={post.status === "published" ? "success" : "secondary"} size="sm">
                 {post.status === "published" ? "Objavljeno" : "Skica"}
               </Badge>
-              <Pencil className="size-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Pencil className="size-4 text-muted-foreground opacity-50 group-hover:opacity-100 transition-opacity" />
             </div>
           </Link>
         ))}
