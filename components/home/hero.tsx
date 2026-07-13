@@ -100,7 +100,7 @@ export function Hero() {
   }, [])
 
   return (
-    <section className="relative flex min-h-[70svh] md:min-h-svh items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-[50svh] md:min-h-svh items-center justify-center overflow-hidden">
       <div className="absolute inset-0">
         <AnimatePresence>
           <motion.div
@@ -122,8 +122,8 @@ export function Hero() {
           </motion.div>
         </AnimatePresence>
 
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/70 to-[#0A0A0A]/40" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/60 via-transparent to-[#0A0A0A]/60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/80 via-[#0A0A0A]/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/30 via-transparent to-[#0A0A0A]/30" />
       </div>
 
       <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 gap-2">
