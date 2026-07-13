@@ -100,22 +100,22 @@ export function Hero() {
   }, [])
 
   return (
-    <section className="relative flex min-h-svh items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-[70svh] md:min-h-svh items-center justify-center overflow-hidden">
       <div className="absolute inset-0">
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           <motion.div
             key={current}
-            initial={{ opacity: 0, scale: 1.15 }}
+            initial={{ opacity: 0, scale: 1.08 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 6, ease: "easeOut" }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
             className="absolute inset-0"
           >
             <Image
               src={slides[current].image}
               alt={`${slides[current].make} ${slides[current].model}`}
               fill
-              className="object-cover"
+              className="object-cover md:object-center"
               priority
               sizes="100vw"
             />
