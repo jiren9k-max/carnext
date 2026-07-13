@@ -46,7 +46,7 @@ function Slider({
           <SliderPrimitive.Thumb
             key={i}
             className={cn(
-              "block size-4 rounded-full border-2 border-primary bg-background shadow-sm",
+              "block size-5 md:size-4 rounded-full border-2 border-primary bg-background shadow-sm",
               "transition-colors",
               "focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30",
               "hover:border-accent"

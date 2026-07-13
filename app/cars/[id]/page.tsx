@@ -141,7 +141,7 @@ export default function CarDetailPage() {
                     alt=""
                     width={80}
                     height={60}
-                    className="size-20 object-cover md:size-24"
+                    className="size-20 object-cover sm:size-24"
                   />
                 </button>
               ))}

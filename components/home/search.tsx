@@ -91,7 +91,7 @@ export function SearchSection() {
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       >
-        <Card variant="glass-strong" padding="xl" className="mx-auto max-w-6xl">
+        <Card variant="glass-strong" padding="xl" className="mx-auto max-w-6xl p-6 md:p-8">
           <div className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2 lg:grid-cols-3">
             <FilterField label="Marka">
               <select

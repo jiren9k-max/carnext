@@ -99,7 +99,7 @@ export function PopularBrands() {
           </p>
         </motion.div>
 
-        <div className="hidden sm:grid sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="hidden sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {brands.map((brand, i) => (
             <BrandCard key={brand.id} brand={brand} index={i} />
           ))}

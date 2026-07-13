@@ -145,7 +145,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 md:col-span-2">
             <h4 className="text-small font-semibold uppercase tracking-wider text-white/70">
               Novosti
             </h4>

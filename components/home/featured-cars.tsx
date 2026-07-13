@@ -44,7 +44,7 @@ export function FeaturedCars() {
             prolazi rigoroznu provjeru kvaliteta.
           </p>
 
-          <div className="mt-6 flex justify-center gap-3">
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
               {[
                 { tag: "Svi", active: "border-primary/50 text-primary bg-primary/10" },
                 { tag: "Novi", active: "border-foreground/30 text-foreground/80 bg-foreground/10" },
