@@ -147,14 +147,6 @@ export function Hero() {
         animate="visible"
         className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-4 text-center"
       >
-        <motion.span
-          variants={itemVariants}
-          className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-small text-primary"
-        >
-          <span className="size-1.5 rounded-full bg-primary" />
-          {slides[current].make} {slides[current].model} &middot; {slides[current].year}
-        </motion.span>
-
         <motion.h1
           variants={itemVariants}
           className="text-display font-bold tracking-tight text-white"
