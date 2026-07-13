@@ -39,6 +39,7 @@ export function Header() {
             : "rgba(10, 10, 10, 0)",
         }}
         transition={{ duration: 0.4, ease: "easeOut" }}
+        style={{ willChange: "auto" }}
         className={cn(
           "border-b transition-all duration-500",
           scrolled
