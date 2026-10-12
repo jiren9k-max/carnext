@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import { FaViber, FaWhatsapp } from "react-icons/fa6"
 import {
   ArrowLeft,
+  ArrowUpRight,
+  Check,
   CheckCircle,
   Clock,
   FileSearch,
@@ -24,11 +26,10 @@ import { Badge } from "@/components/ui/badge"
 import { CarCard } from "@/components/cars/car-card"
 import { Gallery } from "@/components/cars/gallery"
 import { contact, contactLinks } from "@/lib/contact"
-import type { DemoCar } from "@/data/cars"
-
+import type { Badge as CarBadge, Car } from "@/lib/olx"
 
 const badgeConfig: Record<
-  DemoCar["badges"][number],
+  CarBadge,
   { label: string; variant: "default" | "success" | "accent" | "warning" | "secondary" }
 > = {
   novo: { label: "Novo", variant: "success" },
@@ -49,8 +50,8 @@ const km = (n: number) => `${n.toLocaleString("de-DE")} km`
 const price = (n: number) => (n === 0 ? "Cijena na upit" : `${n.toLocaleString("de-DE")} KM`)
 
 interface CarDetailProps {
-  car: DemoCar
-  similar: DemoCar[]
+  car: Car
+  similar: Car[]
 }
 
 export function CarDetail({ car, similar }: CarDetailProps) {
@@ -82,16 +83,7 @@ export function CarDetail({ car, similar }: CarDetailProps) {
     }
   }
 
-  const specs = [
-    { label: "Marka", value: car.make },
-    { label: "Model", value: car.model },
-    { label: "Godište", value: String(car.year) },
-    { label: "Kilometraža", value: km(car.mileage) },
-    { label: "Gorivo", value: car.fuelType },
-    { label: "Mjenjač", value: car.transmission },
-    { label: "Karoserija", value: car.bodyType },
-    { label: "Lokacija", value: "Ilidža, Sarajevo" },
-  ]
+  const specs = [{ label: "Marka", value: car.make }, ...car.specs, { label: "Lokacija", value: "Ilidža, Sarajevo" }]
 
   return (
     <div className="pt-24 md:pt-28">
@@ -102,7 +94,7 @@ export function CarDetail({ car, similar }: CarDetailProps) {
             Vozila
           </Link>
           <span className="text-border">/</span>
-          <Link href={`/inventory?make=${car.make.toLowerCase()}`} className="transition-colors hover:text-foreground">
+          <Link href={`/inventory?make=${encodeURIComponent(car.make)}`} className="transition-colors hover:text-foreground">
             {car.make}
           </Link>
           <span className="text-border">/</span>
@@ -164,7 +156,7 @@ export function CarDetail({ car, similar }: CarDetailProps) {
                       </>
                     )}
                   </p>
-                  <p className="mt-1 text-small text-muted-foreground">Cijena uključuje PDV</p>
+                  {car.price > 0 && <p className="mt-1 text-small text-muted-foreground">Cijena uključuje PDV</p>}
                 </div>
 
                 <div className="mt-6 space-y-2.5">
@@ -240,6 +232,16 @@ export function CarDetail({ car, similar }: CarDetailProps) {
                     <p className="mt-1 text-body-sm text-muted-foreground">Javit ćemo vam se u najkraćem roku.</p>
                   </div>
                 )}
+
+                <a
+                  href={car.olxUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 flex items-center justify-center gap-1.5 border-t border-border/60 pt-4 text-small text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  Pogledajte oglas na OLX.ba
+                  <ArrowUpRight className="size-3.5" />
+                </a>
               </div>
 
               <div className="rounded-2xl border border-border/60 bg-card/30 p-6">
@@ -280,6 +282,22 @@ export function CarDetail({ car, similar }: CarDetailProps) {
                 ))}
               </dl>
             </section>
+
+            {car.features.length > 0 && (
+              <section className="mt-12">
+                <h2 className="text-caption font-semibold text-primary">
+                  Oprema <span className="ml-1 text-muted-foreground">{car.features.length}</span>
+                </h2>
+                <ul className="mt-4 grid gap-x-8 gap-y-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {car.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2.5 text-body-sm text-foreground/85">
+                      <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
 
             <section className="mt-12">
               <h2 className="text-caption font-semibold text-primary">Zašto kupiti kod nas</h2>

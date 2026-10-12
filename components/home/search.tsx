@@ -14,15 +14,7 @@ import {
   SelectItem,
 } from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
-import {
-  makes,
-  fuelTypes,
-  transmissions,
-  bodyTypes,
-  yearRange,
-  priceRange,
-  mileageRange,
-} from "@/data/filters"
+import type { FilterOptions } from "@/lib/car-filters"
 
 interface Filters {
   make: string
@@ -34,23 +26,23 @@ interface Filters {
   bodyType: string
 }
 
-const initialFilters: Filters = {
-  make: "",
-  year: [yearRange.min, yearRange.max],
-  price: [priceRange.min, priceRange.max],
-  mileage: [mileageRange.min, mileageRange.max],
-  fuel: "",
-  transmission: "",
-  bodyType: "",
-}
-
 const formatPrice = (v: number) =>
   v >= 1000 ? `${(v / 1000).toFixed(v % 1000 === 0 ? 0 : 1)}k KM` : `${v} KM`
 
 const formatMileage = (v: number) =>
   v >= 1000 ? `${(v / 1000).toFixed(0)}k km` : `${v} km`
 
-export function SearchSection() {
+export function SearchSection({ options }: { options: FilterOptions }) {
+  const { makes, fuelTypes, transmissions, bodyTypes, yearRange, priceRange, mileageRange } = options
+  const initialFilters: Filters = {
+    make: "",
+    year: [yearRange.min, yearRange.max],
+    price: [priceRange.min, priceRange.max],
+    mileage: [mileageRange.min, mileageRange.max],
+    fuel: "",
+    transmission: "",
+    bodyType: "",
+  }
   const router = useRouter()
   const [filters, setFilters] = useState<Filters>(initialFilters)
 

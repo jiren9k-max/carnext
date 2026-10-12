@@ -5,10 +5,10 @@ import Image from "next/image"
 import { motion } from "framer-motion"
 import { ArrowUpRight } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import type { DemoCar } from "@/data/cars"
+import type { Badge as CarBadge, Car } from "@/lib/olx"
 
 const badgeConfig: Record<
-  DemoCar["badges"][number],
+  CarBadge,
   { label: string; variant: "default" | "success" | "accent" | "warning" | "secondary" }
 > = {
   novo: { label: "Novo", variant: "success" },
@@ -19,7 +19,7 @@ const badgeConfig: Record<
 }
 
 interface CarCardProps {
-  car: DemoCar
+  car: Car
   index?: number
 }
 

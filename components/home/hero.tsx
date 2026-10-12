@@ -7,57 +7,19 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Container } from "@/components/layout/container"
-import { demoCars } from "@/data/cars"
+import type { Car } from "@/lib/olx"
 
 const SLIDE_MS = 7000
+const SLIDE_COUNT = 5
 
-const slides = [
-  {
-    image:
-      "https://d4n0y8dshd77z.cloudfront.net/listings/63580531/lg/img-1726149758-b49a21bff784.jpeg",
-    make: "BMW",
-    model: "X3 M40d xDrive",
-    year: 2019,
-    price: 79900,
-    id: "13",
-  },
-  {
-    image:
-      "https://d4n0y8dshd77z.cloudfront.net/listings/77620739/lg/img-1782394074-1fcbd0b2b9f3.jpeg",
-    make: "Land Rover",
-    model: "Range Rover Evoque",
-    year: 2016,
-    price: 32900,
-    id: "17",
-  },
-  {
-    image:
-      "https://d4n0y8dshd77z.cloudfront.net/listings/75786536/lg/img-1776083844-e2ad1197edff.jpeg",
-    make: "Peugeot",
-    model: "3008 GT Line",
-    year: 2019,
-    price: 34900,
-    id: "2",
-  },
-  {
-    image:
-      "https://d4n0y8dshd77z.cloudfront.net/listings/76175233/lg/img-1777379654-57f2ce7ba1c0.jpeg",
-    make: "Škoda",
-    model: "Kamiq 1.0 TSI",
-    year: 2021,
-    price: 32900,
-    id: "1",
-  },
-  {
-    image:
-      "https://d4n0y8dshd77z.cloudfront.net/listings/77042619/lg/img-1780404022-5381b73187f6.jpeg",
-    make: "Mercedes-Benz",
-    model: "A 180",
-    year: 2013,
-    price: 20900,
-    id: "12",
-  },
-]
+// Feature the most valuable cars; "price on request" listings are usually the top ones.
+function pickSlides(cars: Car[]) {
+  const value = (c: Car) => (c.price === 0 ? Infinity : c.price)
+  return [...cars]
+    .filter((c) => c.images.length > 0)
+    .sort((a, b) => value(b) - value(a) || b.powerKw - a.powerKw)
+    .slice(0, SLIDE_COUNT)
+}
 
 const ease = [0.16, 1, 0.3, 1] as const
 
@@ -74,7 +36,8 @@ const itemVariants = {
 
 const pad = (n: number) => String(n).padStart(2, "0")
 
-export function Hero() {
+export function Hero({ cars }: { cars: Car[] }) {
+  const slides = pickSlides(cars)
   const [current, setCurrent] = useState(0)
   const reduceMotion = useReducedMotion()
 
@@ -85,18 +48,18 @@ export function Hero() {
       setCurrent((prev) => (prev + 1) % slides.length)
     }, SLIDE_MS)
     return () => clearTimeout(timer)
-  }, [current])
+  }, [current, slides.length])
 
   const go = (dir: 1 | -1) =>
     setCurrent((prev) => (prev + dir + slides.length) % slides.length)
 
-  const slide = slides[current]
-  const car = demoCars.find((c) => c.id === slide.id)
+  if (slides.length === 0) return null
+  const slide = slides[current % slides.length]
   const specs = [
     String(slide.year),
-    car && `${car.mileage.toLocaleString("de-DE")} km`,
-    car?.fuelType,
-    car?.transmission,
+    `${slide.mileage.toLocaleString("de-DE")} km`,
+    slide.fuelType,
+    slide.transmission,
   ].filter(Boolean)
 
   return (
@@ -118,7 +81,7 @@ export function Hero() {
               className="absolute inset-0"
             >
               <Image
-                src={slide.image}
+                src={slide.images[0]}
                 alt={`${slide.make} ${slide.model}`}
                 fill
                 className="object-cover"
@@ -178,8 +141,13 @@ export function Hero() {
             <motion.div variants={itemVariants} className="mt-8">
               <p className="text-caption text-white/50">Cijena</p>
               <p className="mt-1 text-h2 font-bold tracking-tight text-white">
-                {slide.price.toLocaleString("de-DE")}{" "}
-                <span className="text-primary">KM</span>
+                {slide.price > 0 ? (
+                  <>
+                    {slide.price.toLocaleString("de-DE")} <span className="text-primary">KM</span>
+                  </>
+                ) : (
+                  "Na upit"
+                )}
               </p>
             </motion.div>
 

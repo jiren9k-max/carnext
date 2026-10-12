@@ -6,22 +6,21 @@ import { ArrowRight } from "lucide-react"
 import { Container } from "@/components/layout/container"
 import { CarCard } from "@/components/cars/car-card"
 import { SectionHeading } from "@/components/shared/section-heading"
-import { demoCars } from "@/data/cars"
+import type { Car } from "@/lib/olx"
 import { cn } from "@/lib/utils"
 
 const ALL = "Sva vozila"
-const available = demoCars.filter((c) => !c.badges.includes("prodano"))
 
-// Only offer body types that have at least one car, most common first.
-const counts = available.reduce<Record<string, number>>((acc, c) => {
-  acc[c.bodyType] = (acc[c.bodyType] ?? 0) + 1
-  return acc
-}, {})
-const tabs = [ALL, ...Object.keys(counts).sort((a, b) => counts[b] - counts[a])]
-
-export function FeaturedCars() {
+export function FeaturedCars({ cars }: { cars: Car[] }) {
   const [active, setActive] = useState(ALL)
-  const featured = (active === ALL ? available : available.filter((c) => c.bodyType === active)).slice(0, 6)
+
+  // Only offer body types that have at least one car, most common first.
+  const counts = cars.reduce<Record<string, number>>((acc, c) => {
+    if (c.bodyType) acc[c.bodyType] = (acc[c.bodyType] ?? 0) + 1
+    return acc
+  }, {})
+  const tabs = [ALL, ...Object.keys(counts).sort((a, b) => counts[b] - counts[a])]
+  const featured = (active === ALL ? cars : cars.filter((c) => c.bodyType === active)).slice(0, 6)
 
   return (
     <section className="pb-24 pt-20 md:pb-32 md:pt-28">
@@ -29,7 +28,7 @@ export function FeaturedCars() {
         <SectionHeading
           eyebrow="Naša ponuda"
           title="Istaknuta vozila"
-          description="Ručno odabrani automobili iz naše kolekcije. Svako vozilo prolazi provjeru prije prodaje."
+          description="Najnovija vozila iz naše ponude. Svako vozilo prolazi provjeru prije prodaje."
           action={
             <Link
               href="/inventory"

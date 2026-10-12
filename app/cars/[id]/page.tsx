@@ -1,23 +1,27 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { demoCars } from "@/data/cars"
+import { getCar, getCars } from "@/lib/olx"
 import { CarDetail } from "@/components/cars/car-detail"
+
+// Keep in sync with REVALIDATE_SECONDS in lib/olx.ts (segment config must be a literal).
+export const revalidate = 600
 
 type Props = {
   params: Promise<{ id: string }>
 }
 
-export function generateStaticParams() {
-  return demoCars.map((car) => ({ id: car.id }))
+export async function generateStaticParams() {
+  return (await getCars()).map((car) => ({ id: car.id }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
-  const car = demoCars.find((c) => c.id === id)
+  const car = await getCar(id)
   if (!car) return {}
 
   const title = `${car.make} ${car.model}`
-  const description = `${car.year} · ${car.mileage.toLocaleString("de-DE")} km · ${car.fuelType} · ${car.transmission} — ${car.price.toLocaleString("de-DE")} KM. CarNext Sarajevo.`
+  const price = car.price ? `${car.price.toLocaleString("de-DE")} KM` : "Cijena na upit"
+  const description = `${car.year} · ${car.mileage.toLocaleString("de-DE")} km · ${car.fuelType} · ${car.transmission} — ${price}. CarNext Sarajevo.`
   return {
     title,
     description,
@@ -27,11 +31,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CarDetailPage({ params }: Props) {
   const { id } = await params
-  const car = demoCars.find((c) => c.id === id)
+  const cars = await getCars()
+  const car = cars.find((c) => c.id === id)
+  // Sold or removed on OLX → the page disappears too.
   if (!car) notFound()
 
   // Prefer the same body type, then the closest price.
-  const similar = demoCars
+  const similar = cars
     .filter((c) => c.id !== car.id)
     .sort(
       (a, b) =>
