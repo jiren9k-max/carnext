@@ -134,20 +134,20 @@ export default async function AboutPage() {
         </section>
       </Container>
 
-      <section className="mt-24 border-t border-white/[0.06] bg-gradient-to-b from-primary/[0.06] to-transparent md:mt-32">
+      <section className="mt-24 border-t border-white/[0.06] border-white/10 bg-gradient-to-br from-ember-600 via-ember-700 to-ember-800 md:mt-32">
         <Container className="flex flex-col items-start justify-between gap-8 py-16 md:flex-row md:items-center md:py-20">
           <div className="max-w-xl">
             <h2 className="text-h1 text-foreground">Pronađite svoje sljedeće vozilo.</h2>
-            <p className="mt-4 text-lead text-muted-foreground">Pogledajte ponudu online ili nas posjetite u showroomu.</p>
+            <p className="mt-4 text-lead text-white/75">Pogledajte ponudu online ili nas posjetite u showroomu.</p>
           </div>
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-            <Button asChild size="xl" className="group gap-2 text-base">
+            <Button asChild size="xl" className="group gap-2 bg-white text-base text-ember-900 hover:bg-white/90">
               <Link href="/inventory">
                 Pogledaj vozila
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
             </Button>
-            <Button asChild size="xl" variant="outline" className="gap-2 border-white/20 text-base">
+            <Button asChild size="xl" variant="outline" className="gap-2 border-white/30 bg-transparent text-base text-white hover:bg-white/10 hover:text-white">
               <a href={contactLinks.tel}>
                 <Phone className="size-4" />
                 {contact.phoneDisplay}

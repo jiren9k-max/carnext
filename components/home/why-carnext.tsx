@@ -62,7 +62,7 @@ function AnimatedCounter({ target, suffix, label }: { target: number; suffix: st
 
 export function WhyCarNext() {
   return (
-    <section className="border-t border-white/[0.06] bg-[#0D0C0A] py-20 md:py-28">
+    <section className="border-t border-white/[0.06] bg-gradient-to-b from-[#0A0A0A] via-ember-950 to-ember-900 py-20 md:py-28">
       <Container>
         <SectionHeading
           eyebrow="Zašto CarNext"
@@ -70,7 +70,7 @@ export function WhyCarNext() {
           description="Ne prodajemo samo automobile — uz svako vozilo dobijate punu podršku i potpunu transparentnost."
         />
 
-        <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.08] sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f, i) => (
             <motion.div
               key={f.title}
@@ -78,7 +78,7 @@ export function WhyCarNext() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true, margin: "-30px" }}
               transition={{ duration: 0.6, delay: (i % 3) * 0.08, ease }}
-              className="bg-[#0D0C0A] p-7 md:p-8"
+              className="bg-black/30 p-7 md:p-8"
             >
               <f.icon className="size-6 text-primary" strokeWidth={1.5} />
               <h3 className="mt-6 text-h6 text-foreground">{f.title}</h3>

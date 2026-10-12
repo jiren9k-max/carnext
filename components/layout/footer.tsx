@@ -22,7 +22,7 @@ const heading = "text-caption font-semibold text-white/50"
 
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden border-t border-white/10 bg-[#0D0C0A]">
+    <footer className="relative overflow-hidden border-t border-white/10 bg-ember-950">
       <div className="pointer-events-none absolute -top-40 left-1/2 size-[520px] -translate-x-1/2 rounded-full bg-primary/[0.07] blur-[140px]" />
 
       <Container className="relative">

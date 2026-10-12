@@ -40,7 +40,7 @@ export function Testimonials() {
   }, [emblaApi])
 
   return (
-    <section className="border-t border-white/[0.06] pt-20 md:pt-28">
+    <section className="bg-gradient-to-b from-ember-900 to-ember-800 pt-20 md:pt-28">
       <Container>
         <SectionHeading
           eyebrow="Utisci kupaca"
@@ -62,12 +62,12 @@ export function Testimonials() {
           <div className="-ml-4 flex">
             {reviews.map((review) => (
               <div key={review.id} className="min-w-0 shrink-0 grow-0 basis-full pl-4 sm:basis-1/2 lg:basis-1/3">
-                <figure className="flex h-full flex-col rounded-2xl border border-white/[0.08] bg-white/[0.02] p-7">
+                <figure className="flex h-full flex-col rounded-2xl border border-white/10 bg-black/20 p-7">
                   <Stars rating={review.rating} />
                   <blockquote className="mt-5 flex-1 text-body leading-relaxed text-foreground/85">
                     &ldquo;{review.comment}&rdquo;
                   </blockquote>
-                  <figcaption className="mt-6 flex items-center gap-3 border-t border-white/[0.08] pt-5">
+                  <figcaption className="mt-6 flex items-center gap-3 border-t border-white/10 pt-5">
                     <span className="flex size-10 items-center justify-center rounded-full bg-white/[0.06] text-small font-semibold text-foreground">
                       {review.name
                         .split(" ")
@@ -92,23 +92,23 @@ export function Testimonials() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="mt-24 border-t border-white/[0.06] bg-gradient-to-b from-primary/[0.06] to-transparent md:mt-32"
+        className="mt-24 border-t border-white/[0.06] border-white/10 bg-gradient-to-br from-ember-600 via-ember-700 to-ember-800 md:mt-32"
       >
         <Container className="flex flex-col items-start justify-between gap-8 py-16 md:flex-row md:items-center md:py-20">
           <div className="max-w-xl">
             <h2 className="text-h1 text-foreground">Postanite i Vi zadovoljni kupac.</h2>
-            <p className="mt-4 text-lead text-muted-foreground">
+            <p className="mt-4 text-lead text-white/75">
               Pogledajte ponudu ili nas pozovite — rado ćemo vam pomoći da pronađete pravi auto.
             </p>
           </div>
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-            <Button asChild size="xl" className="group gap-2 text-base">
+            <Button asChild size="xl" className="group gap-2 bg-white text-base text-ember-900 hover:bg-white/90">
               <Link href="/inventory">
                 Pregledaj vozila
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
             </Button>
-            <Button asChild size="xl" variant="outline" className="gap-2 border-white/20 text-base">
+            <Button asChild size="xl" variant="outline" className="gap-2 border-white/30 bg-transparent text-base text-white hover:bg-white/10 hover:text-white">
               <a href={contactLinks.tel}>
                 <Phone className="size-4" />
                 {contact.phoneDisplay}
