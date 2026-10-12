@@ -3,10 +3,13 @@
 import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArrowUp } from "lucide-react"
+import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
 export function ScrollToTop() {
   const [visible, setVisible] = useState(false)
+  // Car pages have a sticky call bar at the bottom on mobile
+  const hasBottomBar = usePathname().startsWith("/cars/")
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 400)
@@ -30,6 +33,7 @@ export function ScrollToTop() {
           aria-label="Scroll to top"
           className={cn(
             "fixed bottom-6 right-6 z-40 flex size-11 items-center justify-center",
+            hasBottomBar && "bottom-24 lg:bottom-6",
             "rounded-full border border-border bg-card text-muted-foreground",
             "shadow-elevated transition-colors hover:border-primary/50 hover:text-primary",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"

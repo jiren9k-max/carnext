@@ -1,280 +1,44 @@
-"use client"
-
-import { useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { useParams, useRouter } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
-import { ArrowLeft, Fuel, Gauge, Calendar, Cog, Car, CheckCircle, Phone, Send, X } from "lucide-react"
-import { Container } from "@/components/layout/container"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
+import type { Metadata } from "next"
+import { notFound } from "next/navigation"
 import { demoCars } from "@/data/cars"
+import { CarDetail } from "@/components/cars/car-detail"
 
-const badgeConfig: Record<string, { label: string; variant: "default" | "success" | "accent" | "warning" | "secondary" }> = {
-  novo: { label: "Novo", variant: "success" },
-  "top-ponuda": { label: "Top ponuda", variant: "default" },
-  akcija: { label: "Akcija", variant: "warning" },
-  rezervisano: { label: "Rezervisano", variant: "accent" },
-  prodano: { label: "Prodano", variant: "secondary" },
+type Props = {
+  params: Promise<{ id: string }>
 }
 
-function formatMileage(km: number) {
-  return `${(km / 1000).toFixed(km >= 10000 ? 0 : 1)}k km`
+export function generateStaticParams() {
+  return demoCars.map((car) => ({ id: car.id }))
 }
 
-function formatPrice(price: number) {
-  return `${price.toLocaleString("de-DE")} KM`
-}
-
-export default function CarDetailPage() {
-  const { id } = useParams<{ id: string }>()
-  const router = useRouter()
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params
   const car = demoCars.find((c) => c.id === id)
-  const [selectedImage, setSelectedImage] = useState(0)
-  const [showForm, setShowForm] = useState(false)
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" })
-  const [sending, setSending] = useState(false)
-  const [sent, setSent] = useState(false)
+  if (!car) return {}
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setSending(true)
-    try {
-      await fetch("/api/inquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, vehicle: `${car?.make} ${car?.model}` }),
-      })
-      setSent(true)
-    } catch {
-      alert("Došlo je do greške. Molimo pokušajte ponovo.")
-    } finally {
-      setSending(false)
-    }
+  const title = `${car.make} ${car.model}`
+  const description = `${car.year} · ${car.mileage.toLocaleString("de-DE")} km · ${car.fuelType} · ${car.transmission} — ${car.price.toLocaleString("de-DE")} KM. CarNext Sarajevo.`
+  return {
+    title,
+    description,
+    openGraph: { title, description, images: car.images.slice(0, 1) },
   }
+}
 
-  if (!car) {
-    return (
-      <main className="flex min-h-screen flex-col items-center justify-center gap-4 pt-24">
-        <h1 className="text-h2 text-foreground">Vozilo nije pronađeno</h1>
-        <p className="text-muted-foreground">Traženo vozilo ne postoji u našoj kolekciji.</p>
-        <Button asChild><Link href="/inventory">Pogledaj sva vozila</Link></Button>
-      </main>
+export default async function CarDetailPage({ params }: Props) {
+  const { id } = await params
+  const car = demoCars.find((c) => c.id === id)
+  if (!car) notFound()
+
+  // Prefer the same body type, then the closest price.
+  const similar = demoCars
+    .filter((c) => c.id !== car.id)
+    .sort(
+      (a, b) =>
+        Number(b.bodyType === car.bodyType) - Number(a.bodyType === car.bodyType) ||
+        Math.abs(a.price - car.price) - Math.abs(b.price - car.price)
     )
-  }
+    .slice(0, 3)
 
-  const specs = [
-    { icon: Calendar, label: "Godište", value: String(car.year) },
-    { icon: Gauge, label: "Kilometraža", value: formatMileage(car.mileage) },
-    { icon: Fuel, label: "Gorivo", value: car.fuelType },
-    { icon: Cog, label: "Mjenjač", value: car.transmission },
-    { icon: Car, label: "Karoserija", value: car.bodyType },
-  ]
-
-  return (
-    <main className="min-h-screen pt-24">
-      <Container>
-        <div className="mb-6">
-          <Button variant="ghost" size="sm" onClick={() => router.back()} className="gap-2 text-muted-foreground">
-            <ArrowLeft className="size-4" />
-            Nazad
-          </Button>
-        </div>
-
-        <div className="grid gap-8 lg:grid-cols-7">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-4"
-          >
-            <div className="relative aspect-[16/10] overflow-hidden rounded-[var(--radius)]">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={selectedImage}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="absolute inset-0"
-                >
-                  <Image
-                    src={car.images[selectedImage]}
-                    alt={`${car.make} ${car.model}`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 60vw"
-                    priority={selectedImage === 0}
-                  />
-                </motion.div>
-              </AnimatePresence>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-              {car.badges.length > 0 && (
-                <div className="absolute left-4 top-4 z-10 flex flex-wrap gap-2">
-                  {car.badges.map((badge) => {
-                    const config = badgeConfig[badge]
-                    return (
-                      <Badge key={badge} variant={config.variant} size="default">
-                        {config.label}
-                      </Badge>
-                    )
-                  })}
-                </div>
-              )}
-            </div>
-
-            <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
-              {car.images.map((img, i) => (
-                <button
-                  key={i}
-                  onClick={() => setSelectedImage(i)}
-                  className={`relative shrink-0 overflow-hidden rounded-lg border-2 transition-all ${
-                    i === selectedImage
-                      ? "border-primary opacity-100"
-                      : "border-transparent opacity-60 hover:opacity-100"
-                  }`}
-                >
-                  <Image
-                    src={img}
-                    alt=""
-                    width={80}
-                    height={60}
-                    className="size-20 object-cover sm:size-24"
-                  />
-                </button>
-              ))}
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-3"
-          >
-            <div className="mb-2 flex items-center gap-2 text-small text-muted-foreground">
-              <span>{car.make}</span>
-              <span>/</span>
-              <span className="text-foreground">{car.model}</span>
-            </div>
-
-            <h1 className="text-h1 text-foreground">
-              {car.make} {car.model}
-            </h1>
-
-            <div className="mt-1 flex items-baseline gap-2">
-              <span className="text-h2 font-bold text-primary">{formatPrice(car.price)}</span>
-              <span className="text-small text-muted-foreground">cijena uključuje PDV</span>
-            </div>
-
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {specs.map((s) => (
-                <div key={s.label} className="flex items-center gap-3 rounded-lg border border-border/50 bg-card/50 p-3">
-                  <s.icon className="size-5 shrink-0 text-primary" />
-                  <div>
-                    <p className="text-small text-muted-foreground">{s.label}</p>
-                    <p className="text-body-sm font-medium text-foreground">{s.value}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {car.mileage < 10000 && (
-              <div className="mt-4 flex items-center gap-2 rounded-lg border border-emerald-500/20 bg-emerald-500/10 px-4 py-2.5">
-                <CheckCircle className="size-5 text-emerald-500" />
-                <span className="text-body-sm text-emerald-500 font-medium">Skoro novo vozilo</span>
-              </div>
-            )}
-
-            <div className="mt-8 space-y-3">
-              <Button size="lg" className="w-full gap-2" asChild>
-                <a href="tel:+38761911654">
-                  <Phone className="size-4" />
-                  Pozovite 061 911 654
-                </a>
-              </Button>
-              {!showForm && !sent && (
-                <Button variant="outline" size="lg" className="w-full gap-2" onClick={() => setShowForm(true)}>
-                  <Send className="size-4" />
-                  Pošaljite upit
-                </Button>
-              )}
-            </div>
-
-            {showForm && !sent && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-4 rounded-lg border border-border/50 bg-card/50 p-4"
-              >
-                <div className="mb-3 flex items-center justify-between">
-                  <p className="text-h6 text-foreground">Pošaljite upit za {car.make} {car.model}</p>
-                  <button onClick={() => setShowForm(false)} className="text-muted-foreground hover:text-foreground">
-                    <X className="size-4" />
-                  </button>
-                </div>
-                <form onSubmit={handleSubmit} className="space-y-3">
-                  <Input
-                    placeholder="Ime i prezime"
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    required
-                  />
-                  <Input
-                    type="email"
-                    placeholder="Email"
-                    value={form.email}
-                    onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    required
-                  />
-                  <Input
-                    type="tel"
-                    placeholder="Telefon"
-                    value={form.phone}
-                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  />
-                  <textarea
-                    placeholder="Vaša poruka..."
-                    value={form.message}
-                    onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    required
-                    rows={4}
-                    className="w-full rounded-lg border border-border bg-transparent px-4 py-3 text-body text-foreground outline-none transition-colors placeholder:text-muted-foreground/50 focus:border-ring/70"
-                  />
-                  <Button type="submit" size="lg" className="w-full gap-2" disabled={sending}>
-                    <Send className="size-4" />
-                    {sending ? "Slanje..." : "Pošalji"}
-                  </Button>
-                </form>
-              </motion.div>
-            )}
-
-            {sent && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-4 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-6 text-center"
-              >
-                <CheckCircle className="mx-auto mb-2 size-8 text-emerald-500" />
-                <p className="text-h6 text-foreground mb-1">Upit poslan!</p>
-                <p className="text-body-sm text-muted-foreground">
-                  Odgovorit ćemo u najkraćem mogućem roku.
-                </p>
-              </motion.div>
-            )}
-
-            <div className="mt-6 rounded-lg border border-border/50 bg-card/30 p-4">
-              <h3 className="text-h6 text-foreground mb-2">Lokacija vozila</h3>
-              <p className="text-body-sm text-muted-foreground">
-                Kasindolska 58, Ilidža, Sarajevo<br />
-                Radno vrijeme: Pon-Pet 09:00-17:00, Sub 09:00-14:00
-              </p>
-            </div>
-          </motion.div>
-        </div>
-      </Container>
-    </main>
-  )
+  return <CarDetail car={car} similar={similar} />
 }
