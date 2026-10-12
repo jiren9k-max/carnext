@@ -4,7 +4,10 @@ import { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
+import { Phone } from "lucide-react"
+import { FaWhatsapp } from "react-icons/fa6"
 import { cn } from "@/lib/utils"
+import { contact, contactLinks } from "@/lib/contact"
 
 const links = [
   { href: "/", label: "Početna" },
@@ -106,6 +109,22 @@ export function MobileNav() {
                   </Link>
                 </motion.div>
               ))}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: links.length * 0.08 }}
+                className="mt-4 flex w-full max-w-xs flex-col gap-3 px-6"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <a href={contactLinks.tel} className="flex h-12 items-center justify-center gap-2 rounded-lg bg-primary text-base font-medium text-primary-foreground">
+                  <Phone className="size-4" />
+                  {contact.phoneDisplay}
+                </a>
+                <a href={contactLinks.whatsapp()} target="_blank" rel="noopener noreferrer" className="flex h-12 items-center justify-center gap-2 rounded-lg border border-white/20 text-base font-medium text-foreground">
+                  <FaWhatsapp className="size-4" />
+                  WhatsApp
+                </a>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>,

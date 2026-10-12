@@ -4,10 +4,13 @@ import { useEffect, useState, Suspense } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, useScroll, useSpring } from "framer-motion"
+import { Phone } from "lucide-react"
+import { FaWhatsapp } from "react-icons/fa6"
 import { cn } from "@/lib/utils"
 import { Container } from "./container"
 import { Navigation, MobileNav } from "./navigation"
 import { Button } from "../ui/button"
+import { contact, contactLinks } from "@/lib/contact"
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false)
@@ -68,12 +71,26 @@ export function Header() {
             <Navigation />
 
             <div className="flex items-center gap-4">
-              <Button variant="glass" size="sm" className="hidden md:inline-flex transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20" asChild>
-                <Link href="/prijava">Prijava</Link>
+              <Button variant="glass" size="sm" className="hidden gap-2 md:inline-flex transition-colors hover:text-[#25D366]" asChild>
+                <a href={contactLinks.whatsapp()} target="_blank" rel="noopener noreferrer">
+                  <FaWhatsapp className="size-4" />
+                  WhatsApp
+                </a>
               </Button>
-              <Button size="sm" className="hidden md:inline-flex transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20" asChild>
-                <Link href="/registracija">Registracija</Link>
+              <Button size="sm" className="hidden gap-2 md:inline-flex transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/20" asChild>
+                <a href={contactLinks.tel}>
+                  <Phone className="size-4" />
+                  <span className="hidden lg:inline">{contact.phoneDisplay}</span>
+                  <span className="lg:hidden">Pozovite</span>
+                </a>
               </Button>
+              <a
+                href={contactLinks.tel}
+                aria-label={`Pozovite ${contact.phoneDisplay}`}
+                className="flex size-10 items-center justify-center rounded-lg bg-primary text-primary-foreground md:hidden"
+              >
+                <Phone className="size-4" />
+              </a>
               <Suspense fallback={null}>
                 <MobileNav />
               </Suspense>
