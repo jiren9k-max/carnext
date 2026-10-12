@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Geist, Geist_Mono, Sora } from "next/font/google";
 import { MainLayout } from "@/components/layout/main-layout";
 import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
 });
 
 const geistMono = Geist_Mono({
@@ -13,9 +13,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+// Headings
+const sora = Sora({
+  variable: "--font-sora",
+  subsets: ["latin", "latin-ext"],
 });
 
 const siteConfig = {
@@ -23,7 +24,7 @@ const siteConfig = {
   description: "Premium Auto Marketplace — Buy and sell luxury, sports, and premium vehicles with confidence.",
   url: "https://carnext.com",
   ogImage: "/images/og.jpg",
-  locale: "en_US",
+  locale: "bs_BA",
 };
 
 export const viewport: Viewport = {
@@ -92,8 +93,8 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} dark h-full antialiased`}
+      lang="bs"
+      className={`${geistSans.variable} ${geistMono.variable} ${sora.variable} dark h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <MainLayout>{children}</MainLayout>
