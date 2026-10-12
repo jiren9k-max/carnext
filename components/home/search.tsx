@@ -75,8 +75,9 @@ export function SearchSection({ options }: { options: FilterOptions }) {
     router.push(`/inventory${params.toString() ? `?${params.toString()}` : ""}`)
   }
 
+  // z-20: the panel overlaps the bottom of the hero and must sit above it to stay clickable
   return (
-    <section className="relative -mt-24 pb-16 md:-mt-28">
+    <section className="relative z-20 -mt-24 pb-16 md:-mt-28">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
