@@ -1,8 +1,13 @@
+import { unstable_cache } from "next/cache"
+
 // Reads the dealership's active listings from OLX.ba so the website always
 // mirrors what is published there. Server-only: called from pages/route
 // handlers, cached by Next.js and refreshed every REVALIDATE_SECONDS.
 
 export const REVALIDATE_SECONDS = 600
+// Specs and equipment rarely change once a car is listed; price and availability
+// come from the list, which refreshes every REVALIDATE_SECONDS.
+const DETAIL_REVALIDATE_SECONDS = 6 * 60 * 60
 
 const API = "https://api.olx.ba"
 const SHOP = process.env.OLX_SHOP_USERNAME || "CarNextSarajevo"
@@ -56,16 +61,36 @@ type OlxListing = {
   additional?: { created_at?: number }
 }
 
+type OlxListItem = {
+  id: number
+  title: string
+  price: number
+  has_discount: boolean
+  category_id: number
+  status: string
+  visible: boolean
+  available: boolean
+}
+
 type OlxListPage = {
-  data: { id: number; category_id: number; status: string; visible: boolean; available: boolean }[]
+  data: OlxListItem[]
   meta: { last_page: number }
 }
 
-async function olx<T>(path: string): Promise<T> {
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+/** GET from the OLX API. OLX allows 60 requests/minute; on 429 wait as long as it asks. */
+async function olx<T>(path: string, attempt = 0): Promise<T> {
   const res = await fetch(`${API}${path}`, {
     headers: { Accept: "application/json", "User-Agent": "CarNext website (carnextsarajevo.com)" },
-    next: { revalidate: REVALIDATE_SECONDS, tags: ["olx"] },
+    // Results are cached by unstable_cache below; never cache individual calls.
+    cache: "no-store",
   })
+  if ((res.status === 429 || res.status >= 500) && attempt < 3) {
+    const retryAfter = Number(res.headers.get("retry-after")) * 1000
+    await sleep(Math.min(retryAfter || 2000 * 2 ** attempt, 65_000))
+    return olx<T>(path, attempt + 1)
+  }
   if (!res.ok) throw new Error(`OLX ${path} → ${res.status}`)
   return res.json() as Promise<T>
 }
@@ -180,26 +205,37 @@ function toCar(l: OlxListing): Car {
   }
 }
 
-/** All active car listings of the shop, newest first. Throws if OLX is unreachable
- *  so Next.js keeps serving the last successfully generated pages. */
-export async function getCars(): Promise<Car[]> {
+const getListing = unstable_cache(
+  (id: number) => olx<OlxListing>(`/listings/${id}`),
+  ["olx-listing"],
+  { revalidate: DETAIL_REVALIDATE_SECONDS, tags: ["olx"] }
+)
+
+async function fetchCars(): Promise<Car[]> {
   const first = await olx<OlxListPage>(`/users/${SHOP}/listings?page=1`)
   const rest = await Promise.all(
     Array.from({ length: Math.max(0, first.meta.last_page - 1) }, (_, i) =>
       olx<OlxListPage>(`/users/${SHOP}/listings?page=${i + 2}`)
     )
   )
-  const ids = [first, ...rest]
+  const items = [first, ...rest]
     .flatMap((p) => p.data)
     .filter((l) => l.category_id === CARS_CATEGORY_ID && l.status === "active" && l.visible && l.available)
-    .map((l) => l.id)
 
-  const listings = await mapLimit(ids, 6, (id) => olx<OlxListing>(`/listings/${id}`))
-  return listings
-    .filter((l) => l.status === "active" && l.visible)
-    .map(toCar)
+  const details = await mapLimit(items, 3, (item) => getListing(item.id))
+  return details
+    // Price, title and discount from the fresh list; specs from the (longer-cached) details.
+    .map((d, i) => toCar({ ...d, title: items[i].title, price: items[i].price, has_discount: items[i].has_discount }))
     .sort((a, b) => b.createdAt - a.createdAt)
 }
+
+/** All active car listings of the shop, newest first, fetched from OLX at most once
+ *  per REVALIDATE_SECONDS and shared by every page. Throws if OLX is unreachable so
+ *  Next.js keeps serving the last successfully generated pages. */
+export const getCars = unstable_cache(fetchCars, ["olx-cars", SHOP], {
+  revalidate: REVALIDATE_SECONDS,
+  tags: ["olx"],
+})
 
 export async function getCar(id: string): Promise<Car | undefined> {
   return (await getCars()).find((c) => c.id === id)

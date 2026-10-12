@@ -10,8 +10,10 @@ type Props = {
   params: Promise<{ id: string }>
 }
 
+// Render each car page on its first visit, then cache it (ISR). Prerendering all
+// of them at build time fires a burst of OLX requests and gets rate-limited.
 export async function generateStaticParams() {
-  return (await getCars()).map((car) => ({ id: car.id }))
+  return []
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
