@@ -3,13 +3,13 @@
 import { useState } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
+import { FaViber, FaWhatsapp } from "react-icons/fa6"
 import {
   ArrowLeft,
   CheckCircle,
   Clock,
   FileSearch,
   MapPin,
-  MessageCircle,
   Phone,
   PiggyBank,
   RefreshCw,
@@ -23,11 +23,9 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { CarCard } from "@/components/cars/car-card"
 import { Gallery } from "@/components/cars/gallery"
+import { contact, contactLinks } from "@/lib/contact"
 import type { DemoCar } from "@/data/cars"
 
-const PHONE_DISPLAY = "061 911 654"
-const PHONE_INTL = "38761911654"
-const ADDRESS = "Kasindolska 58, Ilidža, Sarajevo"
 
 const badgeConfig: Record<
   DemoCar["badges"][number],
@@ -63,11 +61,7 @@ export function CarDetail({ car, similar }: CarDetailProps) {
   const [sent, setSent] = useState(false)
   const [error, setError] = useState("")
 
-  const whatsapp = `https://wa.me/${PHONE_INTL}?text=${encodeURIComponent(
-    `Pozdrav, zanima me ${name} (${car.year}) – ${price(car.price)}.`
-  )}`
-  const viber = `viber://chat?number=%2B${PHONE_INTL}`
-  const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`CarNext, ${ADDRESS}`)}`
+  const whatsapp = contactLinks.whatsapp(`Pozdrav, zanima me ${name} (${car.year}) – ${price(car.price)}.`)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -175,21 +169,21 @@ export function CarDetail({ car, similar }: CarDetailProps) {
 
                 <div className="mt-6 space-y-2.5">
                   <Button size="lg" className="h-12 w-full gap-2 text-base" asChild>
-                    <a href={`tel:+${PHONE_INTL}`}>
+                    <a href={contactLinks.tel}>
                       <Phone className="size-4" />
-                      Pozovite {PHONE_DISPLAY}
+                      Pozovite {contact.phoneDisplay}
                     </a>
                   </Button>
                   <div className="grid grid-cols-2 gap-2.5">
                     <Button variant="outline" size="lg" className="h-11 gap-2 hover:border-[#25D366]/60 hover:text-[#25D366]" asChild>
                       <a href={whatsapp} target="_blank" rel="noopener noreferrer">
-                        <MessageCircle className="size-4" />
+                        <FaWhatsapp className="size-4" />
                         WhatsApp
                       </a>
                     </Button>
                     <Button variant="outline" size="lg" className="h-11 gap-2 hover:border-[#7360F2]/60 hover:text-[#8B7CF6]" asChild>
-                      <a href={viber}>
-                        <Phone className="size-4" />
+                      <a href={contactLinks.viber}>
+                        <FaViber className="size-4" />
                         Viber
                       </a>
                     </Button>
@@ -253,8 +247,8 @@ export function CarDetail({ car, similar }: CarDetailProps) {
                   <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
                   <div>
                     <p className="text-body-sm font-semibold text-foreground">CarNext Sarajevo</p>
-                    <p className="text-body-sm text-muted-foreground">{ADDRESS}</p>
-                    <a href={maps} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block text-body-sm text-primary hover:underline">
+                    <p className="text-body-sm text-muted-foreground">{contact.street}, {contact.city}</p>
+                    <a href={contactLinks.maps} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block text-body-sm text-primary hover:underline">
                       Otvori u Google Maps
                     </a>
                   </div>
@@ -262,9 +256,12 @@ export function CarDetail({ car, similar }: CarDetailProps) {
                 <div className="mt-4 flex gap-3">
                   <Clock className="mt-0.5 size-4 shrink-0 text-primary" />
                   <p className="text-body-sm text-muted-foreground">
-                    Pon–Pet 09:00–17:00
-                    <br />
-                    Sub 09:00–14:00
+                    {contact.hours.map((h, i) => (
+                      <span key={h.days}>
+                        {i > 0 && <br />}
+                        {h.days} {h.time}
+                      </span>
+                    ))}
                   </p>
                 </div>
               </div>
@@ -331,11 +328,11 @@ export function CarDetail({ car, similar }: CarDetailProps) {
           <div className="flex shrink-0 gap-2">
             <Button variant="outline" size="icon-lg" asChild>
               <a href={whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-                <MessageCircle className="size-4" />
+                <FaWhatsapp className="size-4" />
               </a>
             </Button>
             <Button size="lg" className="gap-2" asChild>
-              <a href={`tel:+${PHONE_INTL}`}>
+              <a href={contactLinks.tel}>
                 <Phone className="size-4" />
                 Pozovite
               </a>
