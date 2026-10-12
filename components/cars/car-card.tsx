@@ -3,10 +3,8 @@
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { Fuel, Gauge, Calendar, Cog, Eye } from "lucide-react"
-import { Card } from "@/components/ui/card"
+import { ArrowUpRight } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import type { DemoCar } from "@/data/cars"
 
 const badgeConfig: Record<
@@ -20,121 +18,75 @@ const badgeConfig: Record<
   prodano: { label: "Prodano", variant: "secondary" },
 }
 
-function formatMileage(km: number) {
-  return `${(km / 1000).toFixed(km >= 10000 ? 0 : 1)}k km`
-}
-
-function formatPrice(price: number) {
-  if (price === 0) return "Cijena na upit"
-  return `${price.toLocaleString("de-DE")} KM`
-}
-
 interface CarCardProps {
   car: DemoCar
   index?: number
 }
 
 export function CarCard({ car, index = 0 }: CarCardProps) {
+  const specs = [String(car.year), `${car.mileage.toLocaleString("de-DE")} km`, car.fuelType, car.transmission]
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-30px" }}
-      transition={{ duration: 0.5, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.5, delay: (index % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
     >
-      <Card
-        variant="glass"
-        hover="glow"
-        padding="off"
-        className="group overflow-hidden"
+      <Link
+        href={`/cars/${car.id}`}
+        className="group block overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.02] transition-colors duration-300 hover:border-white/20"
       >
-        <Link href={`/cars/${car.id}`} className="block">
-          <div className="relative aspect-[16/10] overflow-hidden shimmer">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#1E1E1E] to-[#0A0A0A]" />
+        <div className="relative aspect-[4/3] overflow-hidden bg-card">
+          <Image
+            src={car.images[0]}
+            alt={`${car.make} ${car.model}`}
+            fill
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          />
+          {car.badges.length > 0 && (
+            <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
+              {car.badges.map((badge) => (
+                <Badge key={badge} variant={badgeConfig[badge].variant} size="sm">
+                  {badgeConfig[badge].label}
+                </Badge>
+              ))}
+            </div>
+          )}
+        </div>
 
-            <Image
-              src={car.images[0]}
-              alt={`${car.make} ${car.model}`}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            />
+        <div className="p-5">
+          <p className="text-small text-muted-foreground">
+            {car.make} · {car.bodyType}
+          </p>
+          <h3 className="mt-1 truncate text-h6 font-semibold text-foreground" title={car.model}>
+            {car.model}
+          </h3>
 
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+          <ul className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-small text-muted-foreground">
+            {specs.map((s, i) => (
+              <li key={i} className="flex items-center gap-2">
+                {i > 0 && <span className="size-0.5 rounded-full bg-muted-foreground/60" />}
+                {s}
+              </li>
+            ))}
+          </ul>
 
-            {car.badges.length > 0 && (
-              <div className="absolute left-3 top-3 z-10 flex flex-wrap gap-1.5">
-                {car.badges.map((badge) => {
-                  const config = badgeConfig[badge]
-                  return (
-                    <Badge
-                      key={badge}
-                      variant={config.variant}
-                      size="sm"
-                      className="shadow-lg"
-                    >
-                      {config.label}
-                    </Badge>
-                  )
-                })}
-              </div>
+          <div className="mt-5 flex items-end justify-between border-t border-white/[0.08] pt-4">
+            {car.price > 0 ? (
+              <p className="text-h5 font-semibold tracking-tight text-foreground">
+                {car.price.toLocaleString("de-DE")} <span className="text-primary">KM</span>
+              </p>
+            ) : (
+              <p className="text-body-sm text-muted-foreground">Cijena na upit</p>
             )}
-
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-              <div className="flex size-14 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm">
-                <Eye className="size-6 text-white" />
-              </div>
-            </div>
-
-            <div className="absolute bottom-3 left-3 right-3 z-10">
-              <p className="text-small text-white/60">
-                {car.bodyType} &middot; {car.year}
-              </p>
-            </div>
-          </div>
-
-          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary/0 transition-colors duration-500 group-hover:bg-primary/60" />
-        </Link>
-
-        <div className="p-4 md:p-5">
-          <Link href={`/cars/${car.id}`}>
-            <h3 className="text-h6 font-semibold text-foreground transition-colors group-hover:text-primary">
-              {car.make} {car.model}
-            </h3>
-          </Link>
-
-          <div className="mt-3 grid grid-cols-2 gap-y-2">
-            <Detail icon={Calendar} label={String(car.year)} />
-            <Detail icon={Gauge} label={formatMileage(car.mileage)} />
-            <Detail icon={Fuel} label={car.fuelType} />
-            <Detail icon={Cog} label={car.transmission} />
-          </div>
-
-          <div className="mt-4 flex items-center justify-between border-t border-border/50 pt-4">
-            <div>
-              {car.price > 0 && <span className="text-small text-muted-foreground">Cijena od</span>}
-              <p className={`font-bold ${car.price > 0 ? "text-h4 text-primary" : "text-body-sm text-muted-foreground"}`}>
-                {formatPrice(car.price)}
-              </p>
-            </div>
+            <span className="flex size-9 items-center justify-center rounded-full border border-white/10 text-muted-foreground transition-colors duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground">
+              <ArrowUpRight className="size-4" />
+            </span>
           </div>
         </div>
-      </Card>
+      </Link>
     </motion.div>
-  )
-}
-
-function Detail({
-  icon: Icon,
-  label,
-}: {
-  icon: React.ComponentType<{ className?: string }>
-  label: string
-}) {
-  return (
-    <div className="flex items-center gap-1.5 text-small text-muted-foreground">
-      <Icon className="size-3.5 shrink-0" />
-      <span className="truncate">{label}</span>
-    </div>
   )
 }

@@ -60,7 +60,7 @@ export function Header() {
                   className="relative size-12"
                 />
               </div>
-              <span className="text-h2 font-bold tracking-tight text-foreground">
+              <span className="font-sans text-[clamp(1.5rem,3vw,2.5rem)] font-bold leading-tight tracking-tight text-foreground">
                 Car<span className="text-primary">Next</span>
               </span>
             </Link>

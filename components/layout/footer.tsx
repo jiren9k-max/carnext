@@ -30,7 +30,7 @@ export function Footer() {
           <div className="lg:col-span-4">
             <Link href="/" className="inline-flex items-center gap-2">
               <Image src="/logo.png" alt="CarNext" width={48} height={48} className="size-12" />
-              <span className="text-h2 font-bold tracking-tight text-white">
+              <span className="font-sans text-[clamp(1.5rem,3vw,2.5rem)] font-bold leading-tight tracking-tight text-white">
                 Car<span className="text-primary">Next</span>
               </span>
             </Link>
