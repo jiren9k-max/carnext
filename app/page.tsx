@@ -1,6 +1,7 @@
 import { Hero } from "@/components/home/hero"
 import { SearchSection } from "@/components/home/search"
 import { FeaturedCars } from "@/components/home/featured-cars"
+import { ShowroomBand } from "@/components/home/showroom-band"
 import { PopularBrands } from "@/components/home/popular-brands"
 import { WhyCarNext } from "@/components/home/why-carnext"
 import { Testimonials } from "@/components/home/testimonials"
@@ -18,6 +19,7 @@ export default async function Home() {
       <Hero cars={cars} />
       <SearchSection options={getFilterOptions(cars)} />
       <FeaturedCars cars={cars} />
+      <ShowroomBand />
       <PopularBrands />
       <WhyCarNext />
       <Testimonials />
