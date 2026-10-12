@@ -22,8 +22,17 @@ export async function POST(request: Request) {
       vehicle: vehicle || undefined,
     }
 
-    db.create("inquiries", inquiry)
+    // Saving and emailing are independent: on Vercel the file database is read-only,
+    // so the email alone must be enough. Only fail if the inquiry reached nobody.
+    let saved = false
+    try {
+      db.create("inquiries", inquiry)
+      saved = true
+    } catch (dbErr) {
+      console.warn("Saving inquiry failed (read-only filesystem?):", dbErr)
+    }
 
+    let emailed = false
     try {
       const { sendInquiryEmail } = await import("@/lib/email")
       await sendInquiryEmail({
@@ -34,12 +43,17 @@ export async function POST(request: Request) {
         subject: inquiry.subject,
         vehicle,
       })
+      emailed = true
     } catch (emailErr) {
-      console.warn("Email sending failed (SMTP not configured):", emailErr)
+      console.warn("Email sending failed (SMTP not configured?):", emailErr)
     }
 
+    if (!saved && !emailed) {
+      return NextResponse.json({ error: "Upit nije poslan" }, { status: 500 })
+    }
     return NextResponse.json({ success: true })
   } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 })
+    console.error("Inquiry failed:", err)
+    return NextResponse.json({ error: "Upit nije poslan" }, { status: 500 })
   }
 }
