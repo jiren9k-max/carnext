@@ -62,7 +62,7 @@ function AnimatedCounter({ target, suffix, label }: { target: number; suffix: st
 
 export function WhyCarNext() {
   return (
-    <section className="border-t border-white/[0.06] bg-gradient-to-b from-[#0A0A0A] via-ember-950 to-ember-900 py-20 md:py-28">
+    <section className="border-t border-white/[0.06] bg-gradient-to-b from-ember-950 to-ember-900 py-20 md:py-28">
       <Container>
         <SectionHeading
           eyebrow="Zašto CarNext"

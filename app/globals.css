@@ -6,6 +6,7 @@
 
 /* Dark orange ("ember") tones for the warm lower sections */
 @theme {
+  --color-ember-975: #110A05;
   --color-ember-950: #1A0C04;
   --color-ember-900: #2A1307;
   --color-ember-800: #3B1A09;

@@ -31,7 +31,7 @@ export function PopularBrands() {
   }, [emblaApi])
 
   return (
-    <section className="border-t border-white/[0.06] py-20 md:py-28">
+    <section className="border-t border-white/[0.06] bg-gradient-to-b from-ember-975 to-ember-950 py-20 md:py-28">
       <Container>
         <SectionHeading
           eyebrow="Marke"

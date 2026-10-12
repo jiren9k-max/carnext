@@ -23,7 +23,7 @@ export function FeaturedCars({ cars }: { cars: Car[] }) {
   const featured = (active === ALL ? cars : cars.filter((c) => c.bodyType === active)).slice(0, 6)
 
   return (
-    <section className="pb-24 pt-20 md:pb-32 md:pt-28">
+    <section className="bg-gradient-to-b from-[#0A0A0A] to-ember-975 pb-24 pt-20 md:pb-32 md:pt-28">
       <Container>
         <SectionHeading
           eyebrow="Naša ponuda"

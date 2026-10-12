@@ -25,8 +25,8 @@ export function ShowroomBand() {
         preload="metadata"
         aria-hidden="true"
       />
-      <div className="absolute inset-0 -z-10 bg-[#0A0A0A]/35" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#0A0A0A]/95 via-[#0A0A0A]/60 to-transparent" />
+      <div className="absolute inset-0 -z-10 bg-ember-975/40" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ember-975/95 via-ember-975/60 to-ember-950/20" />
 
       <Container className="py-28 md:py-40">
         <div className="max-w-xl">
