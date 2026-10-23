@@ -37,6 +37,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true })
   } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 })
+    console.error(err)
+    return NextResponse.json({ error: "Greška na serveru" }, { status: 500 })
   }
 }

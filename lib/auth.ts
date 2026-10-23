@@ -1,11 +1,15 @@
 import crypto from "crypto"
 import { cookies } from "next/headers"
 import { db } from "./db"
+import { verifySession } from "./session"
 
 const SALT_LENGTH = 32
 const KEY_LENGTH = 64
 const ITERATIONS = 100000
 const DIGEST = "sha512"
+
+export const USER_COOKIE = "user_token"
+export const USER_SESSION_SECONDS = 60 * 60 * 24 * 7
 
 export interface StoredUser {
   id: string
@@ -26,33 +30,14 @@ export function hashPassword(password: string): { hash: string; salt: string } {
 }
 
 export function verifyPassword(password: string, hash: string, salt: string): boolean {
-  const derived = crypto.pbkdf2Sync(password, salt, ITERATIONS, KEY_LENGTH, DIGEST).toString("hex")
-  return derived === hash
-}
-
-export function createUserToken(email: string): string {
-  return Buffer.from(`${email}:${Date.now()}:user`).toString("base64")
-}
-
-export function decodeUserToken(token: string): { email: string; isValid: boolean } {
-  try {
-    const decoded = Buffer.from(token, "base64").toString("utf-8")
-    const parts = decoded.split(":")
-    if (parts.length !== 3 || parts[2] !== "user") return { email: "", isValid: false }
-    return { email: parts[0], isValid: true }
-  } catch {
-    return { email: "", isValid: false }
-  }
+  const derived = crypto.pbkdf2Sync(password, salt, ITERATIONS, KEY_LENGTH, DIGEST)
+  const expected = Buffer.from(hash, "hex")
+  return expected.length === derived.length && crypto.timingSafeEqual(expected, derived)
 }
 
 export async function getSessionUser() {
-  const cookieStore = await cookies()
-  const token = cookieStore.get("user_token")?.value
-  if (!token) return null
-
-  const { email, isValid } = decodeUserToken(token)
-  if (!isValid || !email) return null
-
-  const users = db.read<StoredUser>("users")
-  return users.find((u) => u.email === email) || null
+  const token = (await cookies()).get(USER_COOKIE)?.value
+  const session = verifySession(token, "user")
+  if (!session) return null
+  return db.read<StoredUser>("users").find((u) => u.email.toLowerCase() === session.sub.toLowerCase()) || null
 }

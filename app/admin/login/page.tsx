@@ -28,7 +28,7 @@ export default function AdminLoginPage() {
       })
 
       if (!res.ok) {
-        setError("Pogrešan email ili lozinka")
+        setError(res.status === 429 ? "Previše pokušaja. Pokušajte ponovo za nekoliko minuta." : "Pogrešan email ili lozinka")
         return
       }
 
@@ -58,7 +58,7 @@ export default function AdminLoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@carnext.com"
+              autoComplete="username"
               required
             />
           </div>
@@ -69,7 +69,7 @@ export default function AdminLoginPage() {
                 type={showPw ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="admin123"
+                autoComplete="current-password"
                 required
                 className="pr-9"
               />
@@ -92,9 +92,6 @@ export default function AdminLoginPage() {
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-small text-muted-foreground">
-          Demo: admin@carnext.com / admin123
-        </p>
       </Card>
     </div>
   )

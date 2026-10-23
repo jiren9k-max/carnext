@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server"
+import { requireAdmin } from "@/lib/admin-auth"
 import { db } from "@/lib/db"
 import type { Promotion } from "@/data/admin"
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireAdmin()
+  if (denied) return denied
+
   const { id } = await params
   const body = await request.json()
   const updated = db.update<Promotion>("promotions", id, body)
@@ -11,6 +15,9 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 }
 
 export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
+  const denied = await requireAdmin()
+  if (denied) return denied
+
   const { id } = await params
   const removed = db.remove("promotions", id)
   if (!removed) return NextResponse.json({ error: "Not found" }, { status: 404 })

@@ -1,47 +1,78 @@
 import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
 import { db } from "@/lib/db"
-import { verifyPassword, createUserToken, type StoredUser } from "@/lib/auth"
+import { verifyPassword, USER_COOKIE, USER_SESSION_SECONDS, type StoredUser } from "@/lib/auth"
+import { ADMIN_COOKIE, ADMIN_SESSION_SECONDS, adminEmail, verifyAdminPassword } from "@/lib/admin-auth"
+import { createSession, sessionCookie, sessionsEnabled } from "@/lib/session"
 
-const ADMIN_EMAIL = "admin@carnext.com"
-const ADMIN_PASSWORD = "admin123"
+// Brute-force protection: after MAX_FAILURES wrong attempts from one IP, block for WINDOW_MS.
+// In-memory per server instance — a speed bump, not a replacement for strong passwords.
+const MAX_FAILURES = 3
+const WINDOW_MS = 15 * 60 * 1000
+const failures = new Map<string, { count: number; until: number }>()
+
+const clientIp = (request: Request) =>
+  request.headers.get("x-forwarded-for")?.split(",")[0].trim() || request.headers.get("x-real-ip") || "unknown"
+
+function blocked(ip: string) {
+  const entry = failures.get(ip)
+  if (!entry) return false
+  if (Date.now() > entry.until) {
+    failures.delete(ip)
+    return false
+  }
+  return entry.count >= MAX_FAILURES
+}
+
+async function fail(ip: string) {
+  const now = Date.now()
+  const entry = failures.get(ip)
+  failures.set(ip, entry && now < entry.until ? { count: entry.count + 1, until: entry.until } : { count: 1, until: now + WINDOW_MS })
+  await new Promise((r) => setTimeout(r, 400)) // slow down guessing
+  return NextResponse.json({ error: "Pogrešan email ili lozinka" }, { status: 401 })
+}
 
 export async function POST(request: Request) {
-  const { email, password } = await request.json()
+  const ip = clientIp(request)
+  if (blocked(ip)) {
+    return NextResponse.json({ error: "Previše pokušaja. Pokušajte kasnije." }, { status: 429 })
+  }
 
+  let email = ""
+  let password = ""
+  try {
+    const body = await request.json()
+    email = String(body.email ?? "").trim().toLowerCase()
+    password = String(body.password ?? "")
+  } catch {
+    return NextResponse.json({ error: "Neispravan zahtjev" }, { status: 400 })
+  }
   if (!email || !password) {
     return NextResponse.json({ error: "Email i lozinka su obavezni" }, { status: 400 })
   }
+  if (!sessionsEnabled()) {
+    console.error("Login disabled: SESSION_SECRET is not set")
+    return NextResponse.json({ error: "Prijava trenutno nije dostupna" }, { status: 503 })
+  }
 
-  if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-    const token = Buffer.from(`${email}:${Date.now()}`).toString("base64")
-    const cookieStore = await cookies()
-    cookieStore.set("admin_token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24,
-    })
+  const cookieStore = await cookies()
+
+  if (adminEmail() && email === adminEmail()) {
+    if (!verifyAdminPassword(password)) return fail(ip)
+    failures.delete(ip)
+    cookieStore.set(ADMIN_COOKIE, createSession(email, "admin", ADMIN_SESSION_SECONDS), sessionCookie(ADMIN_SESSION_SECONDS))
     return NextResponse.json({ success: true, role: "admin" })
   }
 
-  const users = db.read<StoredUser>("users")
-  const user = users.find((u) => u.email === email)
-
-  if (!user || !verifyPassword(password, user.password, user.salt)) {
-    return NextResponse.json({ error: "Pogrešan email ili lozinka" }, { status: 401 })
+  let user: StoredUser | undefined
+  try {
+    user = db.read<StoredUser>("users").find((u) => u.email.toLowerCase() === email)
+  } catch {
+    user = undefined
   }
+  if (!user || !verifyPassword(password, user.password, user.salt)) return fail(ip)
 
-  const token = createUserToken(email)
-  const cookieStore = await cookies()
-  cookieStore.set("user_token", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7,
-  })
-
+  failures.delete(ip)
+  cookieStore.set(USER_COOKIE, createSession(user.email, "user", USER_SESSION_SECONDS), sessionCookie(USER_SESSION_SECONDS))
   return NextResponse.json({ success: true, role: "user" })
 }

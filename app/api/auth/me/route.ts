@@ -1,22 +1,14 @@
 import { NextResponse } from "next/server"
 import { cookies } from "next/headers"
-
-const ADMIN_EMAIL = "admin@carnext.com"
+import { ADMIN_COOKIE, adminEmail, isAdminToken } from "@/lib/admin-auth"
 
 export async function GET() {
-  const cookieStore = await cookies()
-  const token = cookieStore.get("admin_token")?.value
-
-  if (!token) {
+  const token = (await cookies()).get(ADMIN_COOKIE)?.value
+  if (!isAdminToken(token)) {
     return NextResponse.json({ authenticated: false }, { status: 401 })
   }
-
-  const decoded = Buffer.from(token, "base64").toString("utf-8")
-  const email = decoded.split(":")[0]
-
-  if (email !== ADMIN_EMAIL) {
-    return NextResponse.json({ authenticated: false }, { status: 401 })
-  }
-
-  return NextResponse.json({ authenticated: true, user: { name: "Husein Holjan", email: ADMIN_EMAIL } })
+  return NextResponse.json({
+    authenticated: true,
+    user: { name: process.env.ADMIN_NAME || "Husein Holjan", email: adminEmail() },
+  })
 }
