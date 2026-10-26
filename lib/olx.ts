@@ -205,13 +205,18 @@ function toCar(l: OlxListing): Car {
   }
 }
 
+// Cache tags: the scheduled refresh expires only the list (2 OLX requests); listing
+// details keep their 6-hour cache unless a new car appears.
+export const OLX_LIST_TAG = "olx-list"
+const OLX_DETAIL_TAG = "olx-detail"
+
 const getListing = unstable_cache(
   (id: number) => olx<OlxListing>(`/listings/${id}`),
   ["olx-listing"],
-  { revalidate: DETAIL_REVALIDATE_SECONDS, tags: ["olx"] }
+  { revalidate: DETAIL_REVALIDATE_SECONDS, tags: ["olx", OLX_DETAIL_TAG] }
 )
 
-async function fetchCars(): Promise<Car[]> {
+async function fetchSnapshot(): Promise<{ cars: Car[]; fetchedAt: number }> {
   const first = await olx<OlxListPage>(`/users/${SHOP}/listings?page=1`)
   const rest = await Promise.all(
     Array.from({ length: Math.max(0, first.meta.last_page - 1) }, (_, i) =>
@@ -223,19 +228,25 @@ async function fetchCars(): Promise<Car[]> {
     .filter((l) => l.category_id === CARS_CATEGORY_ID && l.status === "active" && l.visible && l.available)
 
   const details = await mapLimit(items, 3, (item) => getListing(item.id))
-  return details
+  const cars = details
     // Price, title and discount from the fresh list; specs from the (longer-cached) details.
     .map((d, i) => toCar({ ...d, title: items[i].title, price: items[i].price, has_discount: items[i].has_discount }))
     .sort((a, b) => b.createdAt - a.createdAt)
+  return { cars, fetchedAt: Date.now() }
 }
 
-/** All active car listings of the shop, newest first, fetched from OLX at most once
- *  per REVALIDATE_SECONDS and shared by every page. Throws if OLX is unreachable so
- *  Next.js keeps serving the last successfully generated pages. */
-export const getCars = unstable_cache(fetchCars, ["olx-cars", SHOP], {
+/** Active car listings plus the time they were fetched from OLX. Fetched at most once per
+ *  REVALIDATE_SECONDS (or when the scheduled refresh expires OLX_LIST_TAG) and shared by
+ *  every page. Throws if OLX is unreachable so Next.js keeps serving the last good pages. */
+export const getCarsSnapshot = unstable_cache(fetchSnapshot, ["olx-cars-v2", SHOP], {
   revalidate: REVALIDATE_SECONDS,
-  tags: ["olx"],
+  tags: ["olx", OLX_LIST_TAG],
 })
+
+/** All active car listings of the shop, newest first. */
+export async function getCars(): Promise<Car[]> {
+  return (await getCarsSnapshot()).cars
+}
 
 export async function getCar(id: string): Promise<Car | undefined> {
   return (await getCars()).find((c) => c.id === id)

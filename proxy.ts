@@ -5,6 +5,7 @@ import { ADMIN_COOKIE, isAdminToken } from "@/lib/admin-auth"
 // except the ones listed here. Each admin route handler also checks requireAdmin() itself.
 const PUBLIC_API: { path: string; methods: string[] }[] = [
   { path: "/api/inquiry", methods: ["POST"] }, // contact and car inquiry forms
+  { path: "/api/cron/olx-refresh", methods: ["GET"] }, // scheduled OLX refresh (self-throttled)
   { path: "/api/auth/login", methods: ["POST"] },
   { path: "/api/auth/logout", methods: ["POST"] },
   { path: "/api/auth/me", methods: ["GET"] },

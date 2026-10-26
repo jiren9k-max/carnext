@@ -1,0 +1,28 @@
+# Every hour: pull the latest cars from OLX into the website (new cars appear,
+# sold/removed cars disappear). Runs on its own — no action needed.
+# Uses the repository variable SITE_URL if set (Settings → Secrets and variables →
+# Actions → Variables), e.g. https://carnextsarajevo.com once the domain is live.
+name: Osvježi vozila sa OLX-a
+
+on:
+  schedule:
+    - cron: "7 * * * *" # every hour at :07 (UTC)
+  workflow_dispatch: # "Run workflow" button for a manual refresh
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SITE: ${{ vars.SITE_URL || 'https://carnext-premium.vercel.app' }}
+    steps:
+      - name: Refresh car list from OLX
+        run: |
+          curl -sS --max-time 90 "$SITE/api/cron/olx-refresh"
+          echo
+      - name: Warm up pages so visitors get the fresh list
+        run: |
+          sleep 5
+          for p in / /inventory /about /sitemap.xml; do
+            curl -s -o /dev/null --max-time 60 -w "$p %{http_code}\n" "$SITE$p"
+          done
