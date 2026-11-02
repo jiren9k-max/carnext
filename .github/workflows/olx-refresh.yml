@@ -1,4 +1,4 @@
-# Every hour: pull the latest cars from OLX into the website (new cars appear,
+# About every hour: pull the latest cars from OLX into the website (new cars appear,
 # sold/removed cars disappear). Runs on its own — no action needed.
 # Uses the repository variable SITE_URL if set (Settings → Secrets and variables →
 # Actions → Variables), e.g. https://carnextsarajevo.com once the domain is live.
@@ -6,7 +6,9 @@ name: Osvježi vozila sa OLX-a
 
 on:
   schedule:
-    - cron: "7 * * * *" # every hour at :07 (UTC)
+    # GitHub often skips scheduled runs when busy, so ask every 15 min; the site itself
+    # only re-reads OLX when its data is older than 45 min, so extra runs cost nothing.
+    - cron: "7,22,37,52 * * * *"
   workflow_dispatch: # "Run workflow" button for a manual refresh
 
 jobs:
