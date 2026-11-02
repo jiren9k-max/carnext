@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...pages,
     ...cars.map((car) => ({
       url: `${SITE_URL}/cars/${car.id}`,
-      lastModified: car.createdAt ? new Date(car.createdAt) : undefined,
+      lastModified: car.listedAt ? new Date(car.listedAt) : undefined,
       changeFrequency: "weekly" as const,
       priority: 0.8,
     })),

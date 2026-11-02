@@ -32,6 +32,8 @@ export interface Car {
   badges: Badge[]
   olxUrl: string
   createdAt: number
+  /** When the ad was last published or renewed on OLX — OLX lists newest-renewed first. */
+  listedAt: number
   specs: { label: string; value: string }[]
   features: string[]
 }
@@ -70,6 +72,7 @@ type OlxListItem = {
   status: string
   visible: boolean
   available: boolean
+  date: number // last renewal (unix seconds)
 }
 
 type OlxListPage = {
@@ -200,6 +203,7 @@ function toCar(l: OlxListing): Car {
     badges,
     olxUrl: `https://olx.ba/artikal/${l.id}`,
     createdAt: created,
+    listedAt: created,
     specs,
     features,
   }
@@ -230,15 +234,19 @@ async function fetchSnapshot(): Promise<{ cars: Car[]; fetchedAt: number }> {
   const details = await mapLimit(items, 3, (item) => getListing(item.id))
   const cars = details
     // Price, title and discount from the fresh list; specs from the (longer-cached) details.
-    .map((d, i) => toCar({ ...d, title: items[i].title, price: items[i].price, has_discount: items[i].has_discount }))
-    .sort((a, b) => b.createdAt - a.createdAt)
+    .map((d, i) => ({
+      ...toCar({ ...d, title: items[i].title, price: items[i].price, has_discount: items[i].has_discount }),
+      listedAt: (items[i].date || 0) * 1000,
+    }))
+    // Same order as the OLX shop: most recently published/renewed first.
+    .sort((a, b) => b.listedAt - a.listedAt)
   return { cars, fetchedAt: Date.now() }
 }
 
 /** Active car listings plus the time they were fetched from OLX. Fetched at most once per
  *  REVALIDATE_SECONDS (or when the scheduled refresh expires OLX_LIST_TAG) and shared by
  *  every page. Throws if OLX is unreachable so Next.js keeps serving the last good pages. */
-export const getCarsSnapshot = unstable_cache(fetchSnapshot, ["olx-cars-v2", SHOP], {
+export const getCarsSnapshot = unstable_cache(fetchSnapshot, ["olx-cars-v3", SHOP], {
   revalidate: REVALIDATE_SECONDS,
   tags: ["olx", OLX_LIST_TAG],
 })

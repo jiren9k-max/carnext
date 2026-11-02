@@ -78,7 +78,7 @@ function filterCars(cars: Car[], p: URLSearchParams) {
       result.sort((a, b) => b.year - a.year)
       break
     default:
-      result.sort((a, b) => b.createdAt - a.createdAt)
+      result.sort((a, b) => b.listedAt - a.listedAt) // same order as OLX
   }
   return result
 }
