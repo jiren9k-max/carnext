@@ -23,7 +23,6 @@ export async function GET(request: NextRequest) {
     revalidateTag(OLX_LIST_TAG, { expire: 0 }) // drop the cached list now
     const after = await getCarsSnapshot() // fetch the fresh list from OLX
     revalidatePath("/", "layout") // rebuild every page with it on the next visit
-    revalidatePath("/sitemap.xml") // route handlers are not covered by the layout revalidation
 
     return NextResponse.json({ refreshed: true, cars: after.cars.length, before: before.cars.length, fetchedAt: new Date(after.fetchedAt).toISOString() })
   } catch (err) {

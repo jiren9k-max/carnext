@@ -2,8 +2,9 @@ import type { MetadataRoute } from "next"
 import { getCars } from "@/lib/olx"
 import { SITE_URL } from "@/lib/site"
 
-// Regenerated with the car list (see lib/olx.ts) so new cars reach Google quickly.
-export const revalidate = 600
+// Built on every request from the shared cached car list (lib/olx.ts) — no extra OLX
+// requests, and it can never lag behind the pages the way a separately cached copy did.
+export const dynamic = "force-dynamic"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const cars = await getCars()
